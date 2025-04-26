@@ -1,9 +1,12 @@
 "use client";
 
 import React, { useState } from 'react';
+import { useSession, signOut } from 'next-auth/react';
+import { deleteUser } from '@/features/auth/deleteUser';
 import './dashboard.css';
 
 const DashboardPage: React.FC = () => {
+    const { data: session, status } = useSession();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
     return (
@@ -43,8 +46,16 @@ const DashboardPage: React.FC = () => {
                         {isSettingsOpen && (
                             <div className="settings-menu">
                                 <button className="sidebar-button small">Profile Details</button>
-                                <button className="sidebar-button small">Delete Profile</button>
-                                <button className="sidebar-button small">Logout</button>
+                                <button className="sidebar-button small" onClick={() => {
+                                  if (session?.user?.email) {
+                                    deleteUser(session.user.email);
+                                  } else {
+                                    console.error("Email is not available");
+                                  }
+                                }}>
+                                  Delete Profile
+                                </button>
+                                <button className="sidebar-button small" onClick={() => signOut({ callbackUrl: "/login" })}>Logout</button>
                             </div>
                         )}
                     </div>

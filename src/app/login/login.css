@@ -1,221 +1,222 @@
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..700;1,400..700&display=swap');
-/* Login.css */
 
-.error-message {
-    background-color: #fef2f2;
-    color: #dc2626;
-    border: 1px solid #f87171;
-    border-radius: 4px;
-    padding: 10px;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 0.9rem;
+/* 1) box-sizing reset */
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
+/* 2) reset defaults */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Instrument Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+/* 3) Outer card container */
 .container {
-    background-color: #fff; /* Light gray background */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 80vh;
-    margin: 0px;
-    margin-bottom: 0%;
+  /* center in viewport */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+
+  /* card styling */
+  max-width: 900px;          /* limits card width */
+  margin: 2rem auto;         /* vertical & horizontal centering */
+  padding: 1rem;             /* inner gutter */
+  background: #fff;          /* white card */
+  border: 1px solid #ddd;    /* light border */
+  border-radius: 12px;       /* rounded corners */
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06); /* subtle lift */
+
+  /* layout of two child panels */
+  flex-wrap: wrap;           /* wrap on narrow screens */
+  gap: 2rem;                 /* space between panels */
 }
 
-
-
+/* 4) Login form panel */
 .login-section {
-    flex: 1;
-    padding: 60px;
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
+  /* fixed width, no auto-expand */
+  flex: 0 0 360px;           /* ← changed */
+  max-width: 360px;          /* ← changed */
+  padding: 40px;             /* you can tweak */
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  background: transparent;   /* use outer card’s white */
 }
 
+/* Logo */
 .logo {
-    display: flex;
-    align-items: center;
-    align-self: center;
-    gap: 10px;
-
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
-
 .logo img {
-    height: 250px;
-    align-items: center;
-    margin-bottom: 0px;
+  height: 80px;              /* shrink */
+  margin-bottom: 0;
 }
-
 .logo span {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #333;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
 }
 
+/* Headings */
 .login-section h1 {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 0px;
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.25rem;
 }
-
 .login-section .tagline {
-    color: #777;
-    font-size: 1rem;
-    line-height: 1.5;
-    align-self: center;
+  color: #777;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  text-align: center;
 }
 
+/* Google login button */
 .google-login {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 15px;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 14px;
-    cursor: pointer;
-    font-size: 1rem;
-    color: #333;
-    transition: border-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #333;
 }
-
 .google-login:hover {
-    border-color: #bbb;
+  border-color: #bbb;
 }
-
 .google-login img {
-    height: 24px;
+  height: 20px;
 }
 
+/* Input groups */
 .input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    position: relative; /* For positioning the toggle password button */
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
 }
-
 .input-group label {
-    font-size: 0.9rem;
-    color: #555;
+  font-size: 0.85rem;
+  color: #555;
 }
-
 .input-group input {
-    padding: 12px 16px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    font-size: 1rem;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.95rem;
 }
-
 .input-group input::placeholder {
-    color: #aaa;
+  color: #aaa;
 }
-
 .input-group input:focus {
-    outline: none;
-    border-color: #007bff; /* Subtle focus color */
-    box-shadow: 0 0 0 0.15rem rgba(0, 123, 255, 0.25);
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
 }
 
-
+/* Options row */
 .options {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.9rem;
-    color: #777;
-    margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #777;
+  margin-top: 8px;
 }
-
 .options label {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 }
-
 .options input[type="checkbox"] {
-    margin-right: 5px;
+  margin-right: 5px;
 }
-
 .options a {
-    color: #007bff;
-    text-decoration: none;
+  color: #007bff;
+  text-decoration: none;
 }
-
 .options a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
+/* Login button */
 .login-button {
-    background-color: #a0522d; /* Brownish color from the button */
-    color: white;
-    padding: 14px 20px;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
+  background-color: #a0522d;
+  color: white;
+  width: 100%;               /* full panel width */
+  padding: 12px 0;           /* tighter padding */
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
 }
-
 .login-button:hover {
-    background-color: #843c1a;
+  background-color: #843c1a;
 }
 
+/* 5) Promo panel */
 .promo-section {
-    flex: 1;
-    margin: 20px;
-    background-color: #52A46E; /* Dark background for promo */
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
-    min-height: 80vh;
-    border-radius: 12px;
-
+  flex: 1;                   /* fill remaining space */
+  margin: 0;                 /* gap handled by .container */
+  padding: 40px;
+  background-color: #52A46E;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;        /* match inner card corners */
 }
-
-
 .promo-content {
-    text-align: center;
-    max-width: 80%;
-    border-radius: 12px;
+  text-align: center;
+  max-width: 80%;
 }
-
 .promo-content h2 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+  font-size: 2rem;
+  margin-bottom: 10px;
 }
-
 .promo-content .sub-headline {
-    font-size: 1.2rem;
-    color: #eee;
-    margin-bottom: 30px;
+  font-size: 1rem;
+  color: #eee;
+  margin-bottom: 20px;
 }
-
 .promo-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px; /* Match the phone screen more closely */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 900px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .login-section {
-        padding: 40px;
-        gap: 20px;
-    }
-
-    .promo-section {
-        padding: 40px;
-    }
-
-    .promo-content {
-        max-width: 95%;
-    }
+  .container {
+    flex-direction: column;
+    margin: 1rem;            /* give more breathing room */
+    padding: 1rem;
+  }
+  .login-section {
+    width: 100%;
+    max-width: none;
+    padding: 30px;
+  }
+  .promo-section {
+    width: 100%;
+    padding: 30px;
+    margin-top: 20px;
+  }
+  .promo-content {
+    max-width: 95%;
+  }
 }

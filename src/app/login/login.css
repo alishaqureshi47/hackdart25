@@ -13,40 +13,35 @@ html, body {
   overflow-x: hidden;
 }
 
-/* 3) Outer card container */
+/* 3) Outer card container – made skinnier */
 .container {
-  /* center in viewport */
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 80vh;
 
-  /* card styling */
-  max-width: 900px;          /* limits card width */
-  margin: 2rem auto;         /* vertical & horizontal centering */
-  padding: 1rem;             /* inner gutter */
-  background: #fff;          /* white card */
-  border: 1px solid #ddd;    /* light border */
-  border-radius: 12px;       /* rounded corners */
-  box-shadow: 0 4px 12px rgba(0,0,0,0.06); /* subtle lift */
+  /* narrower max-width */
+  max-width: 700px;           /* was 900px */
+  margin: 2rem auto;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 
-  /* layout of two child panels */
-  flex-wrap: wrap;           /* wrap on narrow screens */
-  gap: 2rem;                 /* space between panels */
+  flex-wrap: wrap;
+  gap: 2rem;
 }
 
-/* 4) Login form panel */
+/* 4) Login form panel – keep it proportionally smaller */
 .login-section {
-  /* fixed width, no auto-expand */
-  flex: 0 0 360px;           /* ← changed */
-  max-width: 360px;          /* ← changed */
-  padding: 40px;             /* you can tweak */
-
+  flex: 0 0 280px;            /* was 360px */
+  max-width: 280px;
+  padding: 48px;              /* a bit more padding */
   display: flex;
   flex-direction: column;
-  gap: 20px;
-
-  background: transparent;   /* use outer card’s white */
+  gap: 24px;                  /* wider gaps */
+  background: transparent;
 }
 
 /* Logo */
@@ -57,24 +52,23 @@ html, body {
   gap: 10px;
 }
 .logo img {
-  height: 80px;              /* shrink */
-  margin-bottom: 0;
+  height: 100px;              /* larger */
 }
 .logo span {
-  font-size: 1.1rem;
+  font-size: 1.3rem;          /* larger */
   font-weight: bold;
   color: #333;
 }
 
 /* Headings */
 .login-section h1 {
-  font-size: 2rem;
+  font-size: 2.75rem;         /* larger */
   color: #333;
   margin-bottom: 0.25rem;
 }
 .login-section .tagline {
   color: #777;
-  font-size: 0.9rem;
+  font-size: 1.1rem;          /* larger */
   line-height: 1.4;
   text-align: center;
 }
@@ -88,42 +82,34 @@ html, body {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 10px;
+  padding: 12px;              /* more padding */
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1.05rem;         /* larger */
   color: #333;
 }
-.google-login:hover {
-  border-color: #bbb;
-}
 .google-login img {
-  height: 20px;
+  height: 22px;               /* slightly larger */
 }
 
 /* Input groups */
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;                   /* slightly larger gap */
   position: relative;
 }
 .input-group label {
-  font-size: 0.85rem;
+  font-size: 0.95rem;         /* larger */
   color: #555;
 }
 .input-group input {
-  padding: 8px 12px;
+  padding: 10px 14px;         /* larger padding */
   border: 1px solid #ddd;
   border-radius: 8px;
-  font-size: 0.95rem;
-}
-.input-group input::placeholder {
-  color: #aaa;
+  font-size: 1.05rem;         /* larger text */
 }
 .input-group input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.1rem rgba(0, 123, 255, 0.25);
+  box-shadow: 0 0 0 0.15rem rgba(0,123,255,0.25);
 }
 
 /* Options row */
@@ -131,71 +117,48 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.85rem;
+  font-size: 0.95rem;         /* larger */
   color: #777;
   margin-top: 8px;
-}
-.options label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-}
-.options input[type="checkbox"] {
-  margin-right: 5px;
-}
-.options a {
-  color: #007bff;
-  text-decoration: none;
-}
-.options a:hover {
-  text-decoration: underline;
 }
 
 /* Login button */
 .login-button {
-  background-color: #a0522d;
-  color: white;
-  width: 100%;               /* full panel width */
-  padding: 12px 0;           /* tighter padding */
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-}
+    width: auto;
+    min-width: 320px;       /* button will be at least 320px wide */
+    padding: 14px 0;
+    /* center inside the flex container: */
+    align-self: center;
+  }
+  
 .login-button:hover {
   background-color: #843c1a;
 }
 
 /* 5) Promo panel */
 .promo-section {
-  flex: 1;                   /* fill remaining space */
-  margin: 0;                 /* gap handled by .container */
-  padding: 40px;
+  flex: 1;
+  padding: 48px;             /* more padding */
   background-color: #52A46E;
   color: #fff;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;        /* match inner card corners */
+  border-radius: 8px;
 }
 .promo-content {
   text-align: center;
   max-width: 80%;
 }
 .promo-content h2 {
-  font-size: 2rem;
+  font-size: 2.25rem;         /* larger */
   margin-bottom: 10px;
 }
 .promo-content .sub-headline {
-  font-size: 1rem;
-  color: #eee;
+  font-size: 1.15rem;         /* larger */
   margin-bottom: 20px;
 }
 .promo-content img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
@@ -203,7 +166,7 @@ html, body {
 @media (max-width: 900px) {
   .container {
     flex-direction: column;
-    margin: 1rem;            /* give more breathing room */
+    margin: 1rem;
     padding: 1rem;
   }
   .login-section {

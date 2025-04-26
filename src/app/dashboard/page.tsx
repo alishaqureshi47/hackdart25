@@ -57,7 +57,6 @@ const DashboardPage: React.FC = () => {
                   <div className="filter-section">
                     <label htmlFor="filter">Filter by:</label>
                     <select id="filter" className="filter-select">
-                      <option value="popular">choose...</option>
                       <option value="topic">Topic</option>
                       <option value="length">Length</option>
                       <option value="time">Time Published</option>
@@ -67,7 +66,6 @@ const DashboardPage: React.FC = () => {
                   <div className="sort-section">
                     <label htmlFor="sort">Sort by:</label>
                     <select id="sort" className="sort-select">
-                      <option value="popular">choose...</option>
                       <option value="popular">Most Popular</option>
                       <option value="a-z">A-Z</option>
                       <option value="length">Length (Longest to Shortest)</option>

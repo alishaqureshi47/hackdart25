@@ -27,10 +27,9 @@ export default function Login() {
     <div className="container">
       <div className="login-section">
         <div className="logo">
-          <img src="/logo.png" alt="Quipp logo" />
-          <span>QUIPP</span>
+          <img src="/QuippLogo.png" alt="Quipp logo" />
         </div>
-        <h1>Login</h1>
+        <h1><center>Login</center></h1>
         <p className="tagline">Sign in using your campus email.</p>
 
         {error && (
@@ -46,16 +45,9 @@ export default function Login() {
           onClick={handleGoogleSignIn}
           disabled={status === "loading"}
         >
-          <img src="/google_logo.png" alt="Sign in with Google" />
+          <img src="/google_logo.png"  />
           <span>{status === "loading" ? "Loading..." : "Sign in with Google"}</span>
         </button>
-      </div>
-      <div className="promo-section">
-        <div className="promo-content">
-          <h2>Spend Smarter.</h2>
-          <p className="sub-headline">Quickly. Globally.</p>
-          <img src="/phone-mockup.png" alt="Microdose Banking App on Phone" />
-        </div>
       </div>
     </div>
   );

@@ -1,6 +1,9 @@
-import Image from "next/image"
-import Link from "next/link"
-import styles from "./page.module.css"
+"use client";
+
+import Image from "next/image";
+import Link from "next/link";
+import styles from "./page.module.css";
+import { useRouter } from "next/navigation";
 
 // nav items
 const NAV_ITEMS = [
@@ -10,6 +13,8 @@ const NAV_ITEMS = [
 ]
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className={styles.page}>
       <header className={styles.navbar}>
@@ -38,7 +43,9 @@ export default function Home() {
             Easily design your survey in a matter of minutes. Access your audience
             on all platforms. Observe results visually and in real-time.
           </p>
-          <button className={styles.primaryButton}>Request a Demo</button>
+          <button className={styles.primaryButton} onClick={() => {
+            router.push("/login");
+          }}>Join now</button>
         </section>
 
         <section className={styles.features}>

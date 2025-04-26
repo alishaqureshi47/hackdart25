@@ -34,3 +34,8 @@ html, body {
   font-weight: 500;
   font-size: 1rem;
 }
+
+.page-container {
+  padding: 2rem;
+  margin-top: 60px; /* to account for your fixed navbar */
+}

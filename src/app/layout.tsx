@@ -1,4 +1,4 @@
-import Nav from "../components/Nav"
+import Nav from "../components/Nav";
 import Providers from "./providers";
 import type { Metadata } from "next";
 import "./globals.css";
@@ -20,7 +20,9 @@ export default function RootLayout({
           <div className="top-navbar">
             <Nav />
           </div>
-          {children}
+          <div className="page-container">
+            {children}
+          </div>
         </Providers>
       </body>
     </html>

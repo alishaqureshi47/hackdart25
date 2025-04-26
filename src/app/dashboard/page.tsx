@@ -4,8 +4,9 @@ import React, { useState } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { deleteUser } from '@/features/auth/deleteUser';
 import './dashboard.css';
-
+import { useRouter } from 'next/navigation';
 const DashboardPage: React.FC = () => {
+    const router = useRouter();
     const { data: session, status } = useSession();
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -15,7 +16,9 @@ const DashboardPage: React.FC = () => {
             <aside className="sidebar">
                 <nav className="sidebar-nav">
                     <button className="sidebar-button explore">Explore</button>
-                    <button className="sidebar-button create">
+                    <button className="sidebar-button create" onClick={() => {
+                      router.push("/surveys/create");
+                    }}>
                       <span className="create-text">Create</span>
                       <span className="create-plus">+</span>
                     </button>

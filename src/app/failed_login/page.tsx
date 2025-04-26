@@ -9,11 +9,6 @@ import "./failed_login.css";
 export default function Dashboard() {
     const { data: session, status, } = useSession();
 
-
-    if (session?.user?.email?.endsWith('.edu')){
-        redirect('/dashboard');
-    }
-    
     if (status === "loading") {
         return (
           <div className="loading-container">
@@ -22,6 +17,12 @@ export default function Dashboard() {
           </div>
         );
     }
+    if (session?.user?.email?.endsWith('.edu')){
+        redirect('/dashboard');
+    }
+    else{
+    
+    
     
     return(
         <div className="container">
@@ -73,4 +74,5 @@ export default function Dashboard() {
         </div>
     </div> 
     );
+}
 }

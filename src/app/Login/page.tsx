@@ -57,16 +57,13 @@ const Login: React.FC<Props> = () => {
                             onChange={handleRememberMeChange}
                         />{' '}
                         Remember me
-                    </label>
-                    
-                </div>
- 
+                    </label>                    
+                </div>                
             </div>
             <div className="promo-section">
                 <div className="promo-content">
-                    <h2>Spend Smarter.</h2>
-                    <p className="sub-headline">Quickly. Globally.</p>
-                    <img src="/phone-mockup.png" alt="Microdose Banking App on Phone" />
+                    <h2>Survey for Survey.</h2>
+                    <p className="sub-headline">Quick and Precise .</p>                    
                 </div>
             </div>
         </div>

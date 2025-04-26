@@ -1,13 +1,27 @@
 "use client"
 
 import { useState } from "react"
-import styles from "./page.module.css"
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import styles from "./page.module.css";
 
 export default function SurveyPage() {
+  const { data: session, status } = useSession();
+  
   // local state for each field
   const [topic, setTopic] = useState("")
   const [objective, setObjective] = useState("")
   const [questions, setQuestions] = useState("")
+
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    // send data to backend
+    
+  }
 
   return (
     <main className={styles.container}>

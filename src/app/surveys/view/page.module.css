@@ -1,0 +1,89 @@
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;700&display=swap");
+
+/* Container & font */
+.container {
+  font-family: "Instrument Sans", sans-serif;
+  width: 100%;
+  max-width: 640px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+.title {
+  text-align: center;
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+/* Form layout */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Question card */
+.questionCard {
+  background: #eef5f4; /* soft pale-green */
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+.questionLabel {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #222;
+}
+
+/* Text inputs */
+.input,
+.textarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+  background: #fff;
+}
+.textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Options (radio & checkbox) */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.option input {
+  accent-color: #e67a7a; /* coral accent */
+}
+.option span {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Submit button */
+.submitButton {
+  align-self: center;
+  background: #e67a7a;
+  color: #fff;
+  border: none;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.submitButton:hover {
+  background: #cf6b6b;
+}

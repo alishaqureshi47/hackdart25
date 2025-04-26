@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
-import { createUser } from "@/features/auth/createUser"; // Import your createUser function
+import { createUser } from "@/features/auth/createUser"; // Ensure this is the correct path
 
 declare module "next-auth" {
   interface Session {
@@ -57,5 +57,6 @@ export const authOptions: NextAuthOptions = {
   },
 };
 
+// Export the NextAuth handler as the default export
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

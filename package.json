@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@auth/mongodb-adapter": "^3.9.0",
-    "mongodb": "^6.16.0",
+    "firebase": "^11.6.1",
     "next": "15.3.1",
     "next-auth": "^4.24.11",
     "nodemailer": "^6.10.1",

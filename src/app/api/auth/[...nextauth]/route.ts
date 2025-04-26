@@ -1,13 +1,11 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
-import { storeUserData } from "@/features/auth/userData";
 
-// Add type declaration for the session
 declare module "next-auth" {
   interface Session {
     user: {
-      id: string; // Make sure ID is required
+      id?: string;
       email?: string | null;
       name?: string | null;
       image?: string | null;
@@ -24,23 +22,20 @@ export const authOptions: NextAuthOptions = {
   ],
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    async jwt({ token, account, user }) {
-      // Keep the user ID in the token
-      if (account && user) {
-        token.userId = user.id; // Store as userId to be explicit
+    async jwt({ token, user }) {
+      if (user) {
+        // Save the user id to the token
+        token.userId = user.id;
       }
       return token;
     },
-    async session({ session, token, user }) {
-      // Add the user ID to the session
+    async session({ session, token }) {
+      // Add user ID to session from token
       if (session.user) {
-        // Important: Add the user ID from the token
-        session.user.id = token.userId as string || token.sub as string;
+        session.user.id = token.userId as string || token.sub;
       }
-      console.log("Session callback: User ID added to session", session.user.id);
       return session;
     },
   },

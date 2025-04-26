@@ -1,3 +1,5 @@
+/* app/globals.css */
+
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;700&display=swap");
 
 /* 1) make all elements use border-box sizing */
@@ -5,37 +7,18 @@
   box-sizing: border-box;
 }
 
-/* 2) reset defaults & ban horizontal overflow */
+/* 2) reset defaults & ban horizontal overflow, then paint the pattern */
 html, body {
   margin: 0;
   padding: 0;
   font-family: "Instrument Sans", sans-serif;
   overflow-x: hidden;
-}
 
-.top-navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background-color: white;
-  border-bottom: 1px solid #e0e0e0;
-  z-index: 1000; /* stay above sidebar and main content */
-  display: flex;
-  align-items: center;
-  padding: 0 2rem;
-}
-
-/* Optional: to style nav links inside if you want */
-.top-navbar nav {
-  display: flex;
-  gap: 2rem;
-  font-weight: 500;
-  font-size: 1rem;
-}
-
-.page-container {
-  padding: 2rem;
-  margin-top: 60px; /* to account for your fixed navbar */
+  /* ==== ADD THIS: full-page, repeating background ==== */
+  background-image: url("/pattern.png");
+  background-repeat: none;
+  /* control how big each tile is: */
+  background-size: 100%;
+  /* optional—keep the pattern fixed behind content: */
+  background-attachment: fixed;
 }

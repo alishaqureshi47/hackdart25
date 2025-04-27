@@ -1,0 +1,71 @@
+.uploadField {
+    margin-bottom: 1.5rem;
+    width: 100%;
+  }
+  
+  .uploadField label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+  }
+  
+  /* Hide the original file input */
+  .hiddenInput {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+  
+  /* Custom file input container */
+  .fileInputContainer {
+    display: flex;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+  }
+  
+  /* Upload button (left side - red) */
+  .uploadButton {
+    flex: 0 0 120px;
+    background-color: #e67a7a; /* Red color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+  }
+  
+  .uploadButton:hover {
+    background-color: rgb(225, 79, 71);
+  }
+  
+  /* File name display (right side - white) */
+  .fileName {
+    flex: 1;
+    background-color: white;
+    padding: 10px 15px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-left: none;
+    display: flex;
+    align-items: center;
+    color: #666;
+    font-size: 0.9rem;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .uploadButton {
+      flex: 0 0 100px;
+      font-size: 0.9rem;
+    }
+  }

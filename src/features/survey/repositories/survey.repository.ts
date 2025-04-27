@@ -169,13 +169,25 @@ export default class SurveyRepository {
    * Submits a response to a survey
    * @param surveyId - The ID of the survey
    * @param response - The response to add (SurveyAnswer object)
+   * @param respondentId - The ID of the respondent, to keep track of surveys responded
    * @returns A promise that resolves when the response is added
    */
-  public async submitSurveyResponse(surveyId: string, response: SurveyAnswer): Promise<void> {
+  public async submitSurveyResponse(
+    surveyId: string,
+    response: SurveyAnswer,
+    respondentId: string
+  ): Promise<void> {
     const surveyDocRef = doc(db, "surveys", surveyId);
+    const userDocRef = doc(db, "users", respondentId); // Reference to the user's document
 
+    // Update the survey document with the new response
     await updateDoc(surveyDocRef, {
       responses: arrayUnion(response), // Add the response to the responses array
+    });
+
+    // Update the user's document to mark the survey as responded
+    await updateDoc(userDocRef, {
+      [`surveyResponses.${surveyId}`]: true, // Update the surveyResponses field
     });
   }
 }

@@ -6,6 +6,7 @@ import { redirect } from "next/navigation"
 import { createSurvey } from "@/features/survey/services/createSurvey";
 import { useUser } from "@/contexts/UserContext";
 import styles from "./page.module.css"
+import FileInput from "@/shared/components/forms/FileInput";
 
 const CATEGORY_IMAGES = [
   { label: "Business & Entrepreneurship",    img: "/business.png" },
@@ -86,16 +87,13 @@ export default function SurveyPage() {
       <form className={styles.form} onSubmit={handleSubmit}>
 
         {/* UPLOAD FIELD */}
-        <div className={styles.uploadField}>
-          <label htmlFor="header">Header Image (optional)</label>
-          <input
-            ref={fileInputRef}
-            id="header"
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-          />
-        </div>
+        <FileInput
+          id="header"
+          label="Header Image (optional)"
+          accept="image/*"
+          onChange={handleFileChange}
+          reference={fileInputRef}
+        />
 
         {/* CATEGORY DROPDOWN */}
         <div className={styles.field}>

@@ -15,7 +15,7 @@
 /* page title */
 .title {
   /* same size, weight & color as your .field labels */
-  font-size: 0.9rem;
+  font-size: 2.5rem;
   font-weight: 500;
   color: #444;
   margin-bottom: 1rem;
@@ -24,26 +24,16 @@
 
 /* form wrapper */
 .form {
-  background: #e0e0e0;
+  background: #f0f0f0;
   padding: 1.5rem;
   border-radius: 0.75rem;
   width: 100%;
   max-width: 360px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 2px solid #ddd;
   display: flex;
   flex-direction: column;
   gap: 1rem;
-}
-
-/* upload field */
-.uploadField {
-  display: flex;
-  flex-direction: column;
-  font-size: 0.9rem;
-  color: #444;
-}
-.uploadField input {
-  margin-top: 0.5rem;
 }
 
 /* CATEGORY PRESET BUTTONS (small pills) */
@@ -108,6 +98,11 @@
   border: 1px solid #bbb;
   border-radius: 0.25rem;
   background: #fff;
+}
+.field input:focus {
+  outline: none;
+  border-color: #e67a7a;
+  box-shadow: 0 0 0 2px rgba(230,123,122,0.3);
 }
 
 /* dynamic question fields */

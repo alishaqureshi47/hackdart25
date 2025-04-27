@@ -32,23 +32,34 @@
   flex: 1; /* Expand to take available space */
 }
 
-.profile-button {
+.settings-button {
   font-weight: bold;
   width: 100%;
-  text-align: center;
+  text-align: left;
+  display: flex; /* 🔥 Make it flex */
+  align-items: center;
+  justify-content: space-between; /* 🔥 Push text left, arrow right */
   background-color: #f7f9fc;
   border: 2px solid transparent;
   padding: 0.75rem 1rem;
   border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.profile-button:hover {
+.settings-button:hover {
   background-color: #e7f5eb; /* Light green background */
-  border: 2px solid #52A46E;
+  border: 2px solid #52A46E; /* Your green color */
   color: #52A46E;
+}
+
+.settings-text {
+  flex: 1;
+  text-align: left;
+}
+
+.settings-arrow {
+  margin-left: auto;
+  font-size: 1.2rem;
 }
 
 
@@ -102,16 +113,18 @@
   border-color: #F27188;
   color: #F27188;
 }
+
+
 /* Domain Toggle Section */
 .domain-toggle {
-  width: 100%;
-  margin-top: 2rem;
-  padding: 1rem;
-  background-color: #f7f9fc;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  box-sizing: border-box;
   font-size: 0.9rem;
+  margin-top: 2rem;
+  width: 100%;
+  background-color: #f7f9fc;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-sizing: border-box;
 }
 
 .domain-toggle p {
@@ -127,38 +140,12 @@
   cursor: pointer;
 }
 
-/* Checkbox Styles */
 .domain-toggle input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
   margin-right: 0.5rem;
-  background-color: #fff;
-  border: 2px solid #aaa;
-  border-radius: 4px;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease;
+  width: 16px;
+  height: 16px;
 }
 
-/* When checked */
-.domain-toggle input[type="checkbox"]:checked {
-  background-color: #F7C143;
-  border-color: #F7C143;
-}
-
-/* Native checkmark */
-.domain-toggle input[type="checkbox"]:checked::after {
-  content: "✔";
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
 
 /* Main Content */
 .main-content {
@@ -275,4 +262,85 @@
   border-color: #F27188;
 }
 
+/* -------------------------------------------------------------------
+   MOBILE: FLOATING BOTTOM NAV BAR with 3 buttons
+------------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* 1) Stack parent vertically so sidebar is out of the flow */
+  .dashboard-container {
+    flex-direction: column;
+  }
 
+  /* 2) Pin sidebar to bottom, full width */
+  .sidebar {
+    position: fixed !important;
+    top:    auto   !important;   /* cancel any top:60px */
+    bottom: 0      !important;
+    left:   0      !important;
+    width:  100%   !important;
+    height: auto   !important;
+    background: #fff !important;
+    border-right: none   !important;
+    border-top:   1px solid #e0e0e0  !important;
+    box-shadow:   0 -2px 8px rgba(0,0,0,0.05) !important;
+    padding:      0.25rem 0.5rem        !important;
+    display:      flex   !important;
+    flex-direction: row   !important;
+    justify-content: space-around !important;
+    align-items:     center       !important;
+    z-index: 9999      !important;
+  }
+
+  /* 3) Lay out the nav itself as a row */
+  .sidebar-nav {
+    display:          flex   !important;
+    flex-direction:   row   !important;
+    justify-content:  space-between !important;
+    align-items:      center !important;
+    gap:              0.25rem !important;
+    width:            100%    !important;
+  }
+
+  /* 4) Hide the domain‐toggle entirely */
+  .domain-toggle {
+    display: none !important;
+  }
+
+  /* 5) Make sure your profile button (in settings-dropdown) shows up */
+  .settings-dropdown {
+    display: block !important;
+    width: auto    !important;
+  }
+
+  /* 6) Shrink all sidebar buttons so they fit in one row */
+  .sidebar-button {
+    flex:       1 1 auto !important;
+    margin:     0        !important;
+    padding:    0.4rem 0.6rem !important;
+    font-size:  0.85rem  !important;
+    white-space: nowrap  !important;
+    text-align:  center  !important;
+  }
+
+  /* 7) Prevent content from sliding under the nav */
+  .main-content {
+    margin-left: 0         !important;
+    margin-bottom: 3rem    !important; /* same as approx bar height */
+    padding:     1rem      !important;
+  }
+
+  /* 8) Stack your cards in a single column */
+  .cards-grid {
+    display:              grid !important;
+    grid-template-columns: 1fr !important;
+    gap:                   1rem !important;
+    padding:               1rem 0 !important;
+  }
+
+  /* 9) Let your filter/sort wrap cleanly if you kept it visible */
+  .filter-sort-bar {
+    flex-wrap:       wrap          !important;
+    justify-content: flex-start    !important;
+    gap:             0.5rem        !important;
+  }
+}

@@ -24,7 +24,17 @@
   font-weight: 700;
 }
 
-/* Desktop links */
+/* Avatar wrapper */
+.avatarWrapper {
+  margin-left: auto;    /* push it to the far right */
+  margin-right: 0.5rem;
+}
+.avatar {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Desktop nav links */
 .navLinks {
   display: flex;
 }
@@ -44,7 +54,7 @@
   color: #0070f3;
 }
 
-/* Burger: hidden on desktop */
+/* Hidden burger on desktop */
 .burger {
   display: none;
   background: none;
@@ -54,7 +64,7 @@
 
 /* Mobile styles */
 @media (max-width: 640px) {
-  /* hide desktop nav */
+  /* hide normal nav */
   .navLinks {
     display: none;
     position: absolute;
@@ -64,15 +74,10 @@
     background: #fff;
     border-bottom: 1px solid #e0e0e0;
   }
-  /* show burger */
-  .burger {
+  /* show when open */
+  .navLinksOpen {
     display: block;
   }
-  /* when open, show links */
-  .navLinks.open {
-    display: block;
-  }
-  /* stack links vertically */
   .navLinks ul {
     flex-direction: column;
     gap: 0;
@@ -86,5 +91,10 @@
   .navLinks a {
     display: block;
     padding: 0.75rem 1rem;
+  }
+
+  /* show the burger button */
+  .burger {
+    display: block;
   }
 }

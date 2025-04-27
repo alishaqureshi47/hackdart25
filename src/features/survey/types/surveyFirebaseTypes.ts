@@ -1,8 +1,10 @@
 export interface FirebaseSurvey {
+  authorId: string;
   title: string;
-  description?: string; // Optional
+  description: string;
   createdAt: Date;
   questions: SurveyQuestion[];
+  imageUrl: string;
 }
 
 export type SurveyQuestion =
@@ -24,6 +26,5 @@ export interface TextQuestion {
 export interface RangeQuestion {
   questionText: string;
   questionType: "range";
-  min: number; // Minimum value for the range
-  max: number; // Maximum value for the range
+  rangeSize: number; // how big the range is
 }

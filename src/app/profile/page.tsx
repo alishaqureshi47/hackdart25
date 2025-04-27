@@ -5,15 +5,12 @@ import { useSession, signOut } from 'next-auth/react';
 import { deleteUser } from '@/features/auth/deleteUser';
 import { redirect } from "next/navigation";
 import './profile.css'; // assuming your CSS file is named profile.css
-import { useRouter } from 'next/navigation';
 
 const ProfilePage: React.FC = () => {
   const { data: session, status } = useSession();
   if (status === "unauthenticated") {
     redirect("/login");
   }
-
-  const router = useRouter();
 
   function handleDeleteProfile() {
     if (session?.user?.email) {

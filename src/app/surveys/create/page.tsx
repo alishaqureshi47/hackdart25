@@ -3,6 +3,8 @@
 import { useState, useRef, useEffect } from "react"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
+import { createSurvey } from "@/features/survey/services/createSurvey";
+import { useUser } from "@/contexts/UserContext";
 import styles from "./page.module.css"
 
 const CATEGORY_IMAGES = [
@@ -15,10 +17,12 @@ const CATEGORY_IMAGES = [
 ]
 
 export default function SurveyPage() {
-  const { data: session, status } = useSession()
-  if (status === "unauthenticated") redirect("/login")
+  const { data: session, status } = useSession();
+  if (status === "unauthenticated") redirect("/login");
 
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const { userId } = useUser();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string>("")
   const [category, setCategory] = useState<string>("")
   const [topic, setTopic] = useState("")
@@ -34,12 +38,13 @@ export default function SurveyPage() {
 
   // manual file upload
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0]
+    const file = e.target.files?.[0];
+    setSelectedFile(file || null)
     if (file) {
       if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl)
       const url = URL.createObjectURL(file)
       setPreviewUrl(url)
-      setCategory("")   // clear dropdown
+      setCategory("") // clear dropdown
     }
   }
 
@@ -55,10 +60,24 @@ export default function SurveyPage() {
   const removeQuestion = (i: number) => setQuestions((q) => q.filter((_,idx) => idx!==idx))
   const updateQuestion = (i: number, v: string) => setQuestions((q) => q.map((x,idx)=> idx===i?v:x))
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    console.log({ topic, objective, questions, headerImage: previewUrl, category })
-    alert("Submitted! See console for payload.")
+    try {
+      await createSurvey(
+        userId || "",
+        topic, 
+        objective,
+        questions,
+        selectedFile, // Pass the file if uploaded
+        previewUrl // Pass the image path if selected
+      );
+      alert("Survey created successfully!");
+      // redirect
+      redirect("/dashboard");
+    } catch (error) {
+      console.error("Failed to create survey:", error);
+      alert("Failed to create survey.");
+    }
   }
 
   return (

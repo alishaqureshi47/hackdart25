@@ -3,17 +3,17 @@
 import { CreateSurveyInput, PrethoughtQuestion } from '../types/surveyAppTypes'
 import SurveyRepository from '../repositories/survey.repository'
 
-// 1) Array of all default header images
+// Array of all default header images
 const DEFAULT_HEADER_PATHS = [
-  '/business.png',
-  '/creative.png',
-  '/tech.png',
-  '/social.png',
-  '/health.png',
-  '/env.png',
+  'business.png',
+  'creative.png',
+  'tech.png',
+  'social.png',
+  'health.png',
+  'env.png',
 ] as const
 
-// 2) Utility to pick one at random
+// Utility to pick one at random
 function getRandomElement<T>(arr: readonly T[]): T {
   const idx = Math.floor(Math.random() * arr.length)
   return arr[idx]
@@ -25,39 +25,47 @@ interface RawPrethoughtQuestion {
 }
 
 export async function createSurvey(
-  authorId: string,
-  topic: string,
-  objective: string,
-  rawQuestions?: RawPrethoughtQuestion[] | string[],
+    authorId: string,
+    topic: string,
+    objective: string,
+    rawQuestions?: RawPrethoughtQuestion[] | string[],
+    imageFile?: File | null,
+    imagePath?: string,
 ): Promise<void> {
   if (!authorId) {
-    throw new Error('Author ID is required')
+    throw new Error('Author ID is required, and was not found');
   }
 
-  // Normalize questions
-  const prethoughtQuestions: PrethoughtQuestion[] = (rawQuestions || []).map((raw) => {
-    if (typeof raw === 'string') {
-      return { questionText: raw, questionDetails: '' }
+    // Normalize questions
+    const prethoughtQuestions: PrethoughtQuestion[] = (rawQuestions || []).map((raw) => {
+        if (typeof raw === 'string') {
+            return { questionText: raw, questionDetails: '' }
+        }
+        return {
+            questionText: raw.questionText,
+            questionDetails: raw.questionDetails || '',
+        }
+    })
+    
+    // Assemble the payload
+    const surveyData: CreateSurveyInput = {
+        topic,
+        objective,
+        prethoughtQuestions
     }
-    return {
-      questionText: raw.questionText,
-      questionDetails: raw.questionDetails || '',
+    
+    // Persist
+    const surveyRepo = new SurveyRepository();
+    
+    // Check if a file exists
+    if (imageFile) {
+        // If a file exists, send the file and null for the path
+        await surveyRepo.createSurvey(surveyData, authorId, imageFile, undefined)
+    } 
+    else {
+        // If no file exists, send null for the file and a random path
+        // Pick a random default header or use the one that the user chose
+        const selectedHeaderPath = imagePath || getRandomElement(DEFAULT_HEADER_PATHS);
+        await surveyRepo.createSurvey(surveyData, authorId, undefined, selectedHeaderPath)
     }
-  })
-
-  // 3) Pick a random default header
-  const selectedHeaderPath = getRandomElement(DEFAULT_HEADER_PATHS)
-
-  // Assemble the payload
-  const surveyData: CreateSurveyInput = {
-    topic,
-    objective,
-    prethoughtQuestions,
-    defaultHeaderPaths: DEFAULT_HEADER_PATHS,   // full set, if you still need them
-    selectedHeaderPath,                         // the one we randomly chose
-  }
-
-  // Persist
-  const surveyRepo = new SurveyRepository()
-  await surveyRepo.createSurvey(surveyData, authorId)
 }

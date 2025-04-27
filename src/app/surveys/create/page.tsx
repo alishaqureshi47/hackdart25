@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react"
 import { useSession } from "next-auth/react"
-import { redirect } from "next/navigation"
+import { useRouter, redirect } from "next/navigation"
 import { createSurvey } from "@/features/survey/services/createSurvey";
 import { useUser } from "@/contexts/UserContext";
 import styles from "./page.module.css"
@@ -18,6 +18,7 @@ const CATEGORY_IMAGES = [
 ]
 
 export default function SurveyPage() {
+  const router = useRouter();
   const { data: session, status } = useSession();
   if (status === "unauthenticated") redirect("/login");
 
@@ -94,7 +95,7 @@ export default function SurveyPage() {
       );
       alert("Survey created successfully!");
       // redirect
-      redirect("/dashboard");
+      router.replace("/dashboard");
     } catch (error) {
       console.error("Failed to create survey:", error);
       alert("Failed to create survey.");

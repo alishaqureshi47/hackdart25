@@ -1,72 +1,237 @@
-/* Survey page outer container */
 .survey-page-container {
-    display: flex;
-    justify-content: center;
-    padding: 2rem;
-  }
-  
-  /* Survey content wrapper */
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.survey-content-wrapper {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  padding: 2rem;
+}
+
+.survey-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+
+.survey-total-responses {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #666;
+  font-size: 1rem;
+}
+
+.survey-total-responses .highlight {
+  font-weight: bold;
+  color: #8884d8;
+  font-size: 1.1rem;
+}
+
+.survey-question-card {
+  background: #f9f9f9;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #eee;
+}
+
+.survey-question-text {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.question-number {
+  background: #8884d8;
+  color: white;
+  font-size: 0.9rem;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.survey-question-type {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  background: #f0f0f0;
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.survey-no-responses {
+  color: #999;
+  font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  background: #f5f5f5;
+  border-radius: 6px;
+}
+
+.survey-response-visualization {
+  margin-top: 1.5rem;
+}
+
+.chart-container {
+  margin: 1rem 0;
+  width: 100%;
+}
+
+.pie-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.data-table {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+.data-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th, 
+.data-table td {
+  padding: 0.6rem;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.data-table th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.chart-toggle {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.chart-toggle button {
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  padding: 0.5rem 1rem;
+  margin: 0 0.25rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.chart-toggle button:hover {
+  background: #e8e8e8;
+}
+
+.chart-toggle button.active {
+  background: #8884d8;
+  color: white;
+  border-color: #7773b9;
+}
+
+/* Range chart specific */
+.range-label-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  padding: 0 2rem;
+}
+
+.range-min, .range-max {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 500;
+}
+
+/* Text responses */
+.text-responses {
+  margin-top: 1rem;
+}
+
+.response-list {
+  list-style: none;
+  padding: 0;
+}
+
+.text-response-item {
+  padding: 1rem;
+  background: white;
+  border: 1px solid #eee;
+  margin-bottom: 0.75rem;
+  border-radius: 6px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.response-number {
+  background: #f0f0f0;
+  color: #666;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+.response-text {
+  line-height: 1.5;
+}
+
+.no-text-responses {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+/* Loading state */
+.survey-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  font-size: 1.2rem;
+  color: #666;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .survey-content-wrapper {
-    background-color: white;
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 768px;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-  
-  /* Big survey title */
-  .survey-title {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-    margin-bottom: 1.5rem;
-  }
-  
-  /* Each question card */
-  .survey-question-card {
-    background-color: #f9fafb;
     padding: 1.5rem;
-    border-radius: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
   }
   
-  /* The actual question text */
-  .survey-question-text {
-    font-size: 1.5rem;
-    font-weight: 600;
-    text-align: center;
+  .survey-question-card {
+    padding: 1.2rem;
   }
   
-  /* Chart container */
   .chart-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+    height: 250px;
   }
   
-  /* Text response styling */
-  .survey-text-response {
-    background-color: #e5e7eb;
-    padding: 1rem;
-    border-left: 4px solid #3b82f6;
-    border-radius: 0.5rem;
-    text-align: center;
-    font-style: italic;
-    color: #374151;
+  .survey-title {
+    font-size: 1.5rem;
   }
   
-  /* Loading fallback */
-  .survey-loading {
-    padding: 2rem;
-    text-align: center;
-    font-size: 1.25rem;
+  .survey-question-text {
+    font-size: 1.1rem;
   }
-  
+}

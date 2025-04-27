@@ -139,47 +139,53 @@ export default class SurveyRepository {
   /**
    * Fetches a survey by ID
    * @param surveyId - The ID of the survey
-   * @returns A promise resolving to the survey object
+   * @param userId - The ID of the user (optional)
+   * @returns A promise resolving to the survey object or null
    */
-  public async fetchSurveyById(surveyId: string): Promise<FirebaseSurvey | null> {
+  public async fetchSurveyById(surveyId: string, userId?: string): Promise<FirebaseSurvey | null> {
     // Safety check for surveyId
     if (!surveyId || typeof surveyId !== "string" || surveyId.trim() === "") {
       throw new Error("Invalid survey ID provided.");
     }
-  
+
     try {
       // Reference to the specific survey document
       const surveyDocRef = doc(db, "surveys", surveyId);
-  
+
       // Fetch the document from Firebase
       const surveySnapshot = await getDoc(surveyDocRef);
-  
+
       // Check if the document exists
       if (!surveySnapshot.exists()) {
         console.error(`Survey with ID ${surveyId} does not exist.`);
         return null;
       }
-  
+
       // Map the document data to the FirebaseSurvey type
       const surveyData = surveySnapshot.data();
       const survey: FirebaseSurvey = {
-        id: surveyData.id, // Document ID
+        id: surveyId, // Use the document ID
         authorId: surveyData.authorId,
         title: surveyData.title,
         description: surveyData.description,
-        createdAt: surveyData.createdAt.toDate(), // Convert Firestore Timestamp to JavaScript Date
+        createdAt: surveyData.createdAt,
         questions: surveyData.questions,
-        imageUrl: surveyData.imageUrl,
-        responses: surveyData.responses,
+        imageUrl: surveyData.imageUrl, // Add the missing imageUrl field
+        responses: surveyData.responses, // Add the missing responses field
       };
-  
+
+      // If userId is provided, ensure it matches the authorId
+      if (userId && survey.authorId !== userId) {
+        console.warn(`User ID ${userId} is not authorized to access survey ${surveyId}.`);
+        return null;
+      }
+
       return survey;
     } catch (error) {
-      console.error(`Failed to fetch survey with ID ${surveyId}:`, error);
+      console.error("Error fetching survey:", error);
       throw error;
     }
   }
-
   /**
    * Fetches the surveys from Firebase.
    * @returns A promise resolving to an array of surveys.

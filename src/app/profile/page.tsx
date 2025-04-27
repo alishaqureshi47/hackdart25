@@ -110,9 +110,9 @@ const ProfilePage: React.FC = () => {
                 timeToFill={Math.max(1, Math.floor(survey.questions.length / 2)).toString()}
                 numQuestions={survey.questions.length}
                 imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
-                onEdit={() => console.log("Edit clicked", survey.title)}
+                onEdit={() => router.push(`/surveys/edit?id=${survey.id}`)}
                 onViewResponses={() => router.push(`/surveyanswers/${survey.id}`)}
-                onClick={() => console.log("Preview clicked", survey.title)}
+                onClick={() => router.push(`/surveys/view?id=${survey.id}`)}
               />
             ))
           )}

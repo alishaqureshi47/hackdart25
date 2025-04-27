@@ -33,7 +33,7 @@ export default function SurveyPage() {
     
 
     fetchSurvey();
-  }, []);
+  }, [surveyId]);
 
   function handleChange(id: number, value: any) {
     setAnswers((prev) => ({ ...prev, [id]: value }))
@@ -57,8 +57,8 @@ export default function SurveyPage() {
         }
       } else if (q.questionType === "range") {
         return {
-          selectedValue: answers[index],
-          selectedValueIndex: answers[index] - 1,
+          selectedValue: answers[index] || 1,
+          selectedValueIndex: answers[index] - 1 || 0,
           questionType: q.questionType,
         }
       } else {
@@ -89,6 +89,7 @@ export default function SurveyPage() {
                 value={answers[index] || ""}
                 onChange={(e) => handleChange(index, e.target.value)}
                 style={{resize: "none"}}
+                required
               />
             )}
 
@@ -98,6 +99,7 @@ export default function SurveyPage() {
                 {q.options.map((opt, i) => (
                   <label key={opt} className={styles.option}>
                     <input
+                      required
                       type="radio"
                       name={`q${index}-${i}`}
                       value={opt}
@@ -139,6 +141,7 @@ export default function SurveyPage() {
             {q.questionType === "range" && (
               <div className={styles.rangeWrapper}>
                 <input
+                  required
                   className={styles.rangeInput}
                   type="range"
                   min={1}

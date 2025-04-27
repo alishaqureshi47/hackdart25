@@ -78,24 +78,28 @@ const DashboardPage: React.FC = () => {
 
       {/* MAIN CONTENT */}
       <main className="main-content">
-        <div className="cards-grid">
-          {loading ? (
-            <p>Loading surveys...</p>
+          { surveys.length > 0 ? (
+          <div className="cards-grid">
+            {loading ? (
+              <p>Loading surveys...</p>
+            ) : (
+              surveys.map((survey, index) => (
+                <SurveyCard
+                  id={survey.id}
+                  key={index}
+                  title={survey.title}
+                  description={survey.description}
+                  datePublished={new Date(survey.createdAt)}
+                  timeToFill={Math.max(1, Math.floor(survey.questions.length / 2)).toString()}
+                  numQuestions={survey.questions.length}
+                  imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
+                />
+              ))
+            )}
+          </div>
           ) : (
-            surveys.map((survey, index) => (
-              <SurveyCard
-                id={survey.id}
-                key={index}
-                title={survey.title}
-                description={survey.description}
-                datePublished={new Date(survey.createdAt)}
-                timeToFill={Math.max(1, Math.floor(survey.questions.length / 2)).toString()}
-                numQuestions={survey.questions.length}
-                imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
-              />
-            ))
-          )}
-        </div>
+            <p>No surveys!</p>
+          )}  
       </main>
 
       {/* MOBILE‐ONLY BOTTOM BAR */}

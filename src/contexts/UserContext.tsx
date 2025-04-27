@@ -1,66 +1,71 @@
-"use client";
-
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import React, { createContext, useState, useEffect, ReactNode, useContext } from "react";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { db } from "@/firebase/firebase";
-import { collection, query, where, getDocs } from "firebase/firestore";
 
 interface UserContextType {
-    userId: string | null;
+  userId: string | null;
+  setUserId: (id: string | null) => void;
 }
 
-const UserContext = createContext<UserContextType | undefined>(undefined);
+export const UserContext = createContext<UserContextType>({
+  userId: null,
+  setUserId: () => {},
+});
 
-export const UserProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [userId, setUserId] = useState<string | null>(null);
-    const { data: session } = useSession();
+export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [userId, setUserId] = useState<string | null>(null);
+  const router = useRouter();
 
-    useEffect(() => {
-        const fetchUserId = async () => {
-            // Check localStorage for userId
-            const storedUserId = localStorage.getItem("userId");
-            if (storedUserId) {
-                setUserId(storedUserId);
-                return;
-            }
+  useEffect(() => {
+    const checkUser = async () => {
+      const storedUserId = localStorage.getItem("userId");
 
-            // Get email from session
-            const email = session?.user?.email;
-            if (!email) return;
+      if (storedUserId) {
+        try {
+          // Attempt to fetch user data from Firestore
+          const userDoc = await getDoc(doc(db, "users", storedUserId));
+          if (userDoc.exists()) {
+            setUserId(storedUserId);
+          } else {
+            throw new Error("User not found in Firestore");
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+          handleSignOut();
+        }
+      } else {
+        handleSignOut();
+      }
+    };
 
-            try {
-                // Query Firebase for userId using email
-                const usersCollection = collection(db, "users");
-                const q = query(usersCollection, where("email", "==", email));
-                const querySnapshot = await getDocs(q);
+    const handleSignOut = () => {
+      // Clear local storage and sign out the user
+      localStorage.removeItem("userId");
+      signOut()
+        .then(() => {
+          router.push("/login"); // Redirect to login page
+        })
+        .catch((error) => {
+          console.error("Error signing out:", error);
+        });
+    };
 
-                if (!querySnapshot.empty) {
-                    const userDoc = querySnapshot.docs[0];
-                    const fetchedUserId = userDoc.id;
+    checkUser();
+  }, [db, router]);
 
-                    // Save userId to state and localStorage
-                    setUserId(fetchedUserId);
-                    localStorage.setItem("userId", fetchedUserId);
-                }
-            } catch (error) {
-                console.error("Error fetching userId from Firebase:", error);
-            }
-        };
-
-        fetchUserId();
-    }, [session]);
-
-    return (
-        <UserContext.Provider value={{ userId }}>
-            {children}
-        </UserContext.Provider>
-    );
+  return (
+    <UserContext.Provider value={{ userId, setUserId }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export const useUser = (): UserContextType => {
-    const context = useContext(UserContext);
-    if (!context) {
-        throw new Error("useUser must be used within a UserProvider");
-    }
-    return context;
+  const context = useContext(UserContext);
+  if (!context) {
+    throw new Error("useUser must be used within a UserProvider");
+  }
+  return context;
 };

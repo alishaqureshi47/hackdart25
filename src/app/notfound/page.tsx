@@ -15,7 +15,7 @@ export default function NotFoundPage() {
           Oops! The page you're looking for doesn't exist.
         </p>
         <button
-          onClick={() => router.push('/')}
+          onClick={() => router.push('/dashboard')}
           className={styles.button}
         >
           Go Home

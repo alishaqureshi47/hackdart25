@@ -4,9 +4,10 @@ import { FirebaseSurvey } from "../types/surveyFirebaseTypes"; // Adjust the pat
 /**
  * Wrapper function to fetch a survey by ID with additional safety checks.
  * @param surveyId - The ID of the survey to fetch.
+ * @param userId - Optional user ID for fetching user-specific surveys.
  * @returns A promise resolving to the survey object in FirebaseSurvey format.
  */
-export async function fetchSurveyById(surveyId: string): Promise<FirebaseSurvey | null> {
+export async function fetchSurveyById(surveyId: string, userId?: string): Promise<FirebaseSurvey | null> {
     // Initialize the repository
     const surveyRepository = new SurveyRepository();
     // Perform safety checks for surveyId
@@ -16,7 +17,7 @@ export async function fetchSurveyById(surveyId: string): Promise<FirebaseSurvey 
 
     try {
         // Call the fetchSurveyById function
-        const survey = await surveyRepository.fetchSurveyById(surveyId);
+        const survey = await surveyRepository.fetchSurveyById(surveyId, userId);
 
         // Additional checks (e.g., ensure required fields are present)
         if (!survey) {

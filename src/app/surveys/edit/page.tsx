@@ -1,16 +1,21 @@
 "use client"
-
-import { useState, useRef, useEffect } from "react"
-import { useSession } from "next-auth/react"
-import { useRouter, redirect, useSearchParams } from "next/navigation"
-import { doc, getDoc, updateDoc } from "firebase/firestore"
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage"
-import { db } from "@/firebase/firebase"
-import { useUser } from "@/contexts/UserContext"
-import FileInput from "@/shared/components/forms/FileInput"
-import styles from "./page.module.css"
-import { FirebaseSurvey, SurveyQuestion, MultipleChoiceQuestion, TextQuestion, RangeQuestion } from "@/features/survey/types/surveyFirebaseTypes"
-import { fetchSurveyById } from "@/features/survey/services/fetchSurveyById"
+import { useState, useRef, useEffect, Suspense } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter, redirect, useSearchParams } from "next/navigation";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { db } from "@/firebase/firebase";
+import { useUser } from "@/contexts/UserContext";
+import FileInput from "@/shared/components/forms/FileInput";
+import styles from "./page.module.css";
+import {
+  FirebaseSurvey,
+  SurveyQuestion,
+  MultipleChoiceQuestion,
+  TextQuestion,
+  RangeQuestion,
+} from "@/features/survey/types/surveyFirebaseTypes";
+import { fetchSurveyById } from "@/features/survey/services/fetchSurveyById";
 
 const CATEGORY_IMAGES = [
   { label: "Business & Entrepreneurship", img: "/business.png" },
@@ -24,10 +29,23 @@ const CATEGORY_IMAGES = [
 export default function EditSurveyPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const { userId } = useUser();
   
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
+
   // Protect route
-  if (status === "unauthenticated") redirect("/login");
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <EditSurveyContent />
+    </Suspense>
+  );
+}
+
+function EditSurveyContent() {
+  const router = useRouter();
+  const { userId } = useUser();
   
   // Form state
   const fileInputRef = useRef<HTMLInputElement>(null);

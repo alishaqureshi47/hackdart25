@@ -23,3 +23,19 @@ This is a web-based survey application built with Next.js and TypeScript. The ap
    git clone <repository-url>
    cd <repository-folder>
    ```
+2. Local Server Host:
+In your powershell,
+    ```
+    npm install
+    npm run dev
+    ```
+    Now you should be good to go!
+
+## Contributing
+Tina Pan <tina.pan.28@dartmouth.edu>
+Alejandro Manrique Nunez <alejandro.s.manrique.nunez.28@dartmouth.edu>
+Alisha Ahmad Qureshi <alisha.ahmad.qureshi.28@dartmouth.edu>
+Vishal Powell <Vishal.J.Powell.28@dartmouth.edu>
+
+## Disclaimer
+We did use AI in the making of this project for generating the serverys and debugging our code.

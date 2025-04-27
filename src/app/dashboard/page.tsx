@@ -1,9 +1,13 @@
 "use client";
 
-import React from "react";
-import { useSession } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
-import "./dashboard.css";
+import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { deleteUser } from '@/features/auth/deleteUser';
+import { redirect } from "next/navigation";
+import './dashboard.css';
+import { useRouter } from 'next/navigation';
+import SurveyCard from '@/shared/components/surveycard';
+
 
 const DashboardPage: React.FC = () => {
   const { data: session, status } = useSession();

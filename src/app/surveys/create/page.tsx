@@ -29,31 +29,7 @@ export default function SurveyPage() {
     setQuestions((qs) => qs.map((q, i) => (i === idx ? val : q)))
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    console.log({ topic, objective, questions })
-    // call API
-    if (!userId) {
-      console.error("User ID is not available");
-      return;
-    }
-    setIsCreatingSurvey(true);
-    createSurvey(userId, topic, objective, questions) // pass author and info
-      .then(() => {
-        // Handle success (e.g., show a success message or redirect)
-        console.log("Survey created successfully");
-      })
-      .catch((error) => {
-        // Handle error (e.g., show an error message)
-        console.error("Error creating survey:", error);
-      })
-      .finally(() => {
-        // Reset the form or redirect after survey creation
-        setIsCreatingSurvey(false);
-        setTopic("");
-        setObjective("");
-        setQuestions([]);
-        alert("Survey created successfully");
-      });
+    e.preventDefault();
   }
 
   return (

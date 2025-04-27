@@ -1,77 +1,89 @@
 "use client";
 
-
 import { useSession, signOut } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import "./failed_login.css"; 
+import "./failed_login.css";
 
 export default function Dashboard() {
-    const { data: session, status, } = useSession();
+  const { data: session, status } = useSession();
+  const [signedOut, setSignedOut] = useState(false);
+  const router = useRouter();
 
-    if (status === "loading") {
-        return (
-          <div className="loading-container">
-            <div className="loading-spinner"></div>
-            <p>Loading...</p>
-          </div>
-        );
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.email) {
+      if (session.user.email.endsWith(".edu")) {
+        router.push("/dashboard");
+      } else {
+        signOut({ redirect: false }).then(() => {
+          setSignedOut(true);
+        });
+      }
     }
-    if (session?.user?.email?.endsWith('.edu')){
-        redirect('/dashboard');
-    }
-    else{
-    
-    
-    return(
-        <div className="container">
-              {/* Navbar */}
-              <nav className="navbar">
-                <div className="navbar-container">
-                  <div className="logo-container">
-                    <Image 
-                      src="/logo.png" 
-                      alt="Quipp Logo" 
-                      width={32} 
-                      height={32} 
-                    />
-                    <span className="logo-text">QUIPP</span>
-                  </div>
-                  
-                  <div className="user-actions">
-                    {/* User email display */}
-                    <div className="user-email">
-                      {session?.user?.email}
-                    </div>
-                  </div>
-                </div>
-              </nav>
+  }, [session, status, router]);
 
-        
-        {/* Main content */}
-        <div className="main-content">
-            <div className="dashboard-card">
-                <div className="card-header">
+  useEffect(() => {
+    if (signedOut) {
+      // 🛡️ Disable all clicks globally
+      document.body.style.pointerEvents = "none";
+    } else {
+      // ✅ Make sure we re-enable it if not signedOut
+      document.body.style.pointerEvents = "auto";
+    }
+
+    // Clean up if user navigates away
+    return () => {
+      document.body.style.pointerEvents = "auto";
+    };
+  }, [signedOut]);
+
+  if (status === "loading") {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="container invalid-login-page">
+      {/* Full page stays as is */}
+      <div className="main-content">
+        <div className="dashboard-card">
+          <div className="card-header">
+            {signedOut ? (
+              <>
                 <h1>Invalid Login</h1>
                 <h2>
-                    Welcome ,<strong> {session?.user?.name || session?.user?.email?.split('@')[0]}  </strong> 
+                  Hello, <strong>{session?.user?.name || "Guest"}</strong>
                 </h2>
                 <p>
-                    Unfortunately, we only allow users with a .edu email to access this site.  
-                
-                    Please log out and try again with an email ending in <strong>.edu</strong>
-                    
+                  You have been signed out because we only allow emails ending with <strong>.edu</strong>.
+                  Please click the button below to return to the login page.
                 </p>
-                </div>
-            </div>
-            <button
-              onClick={() => signOut({ callbackUrl: "/login" })}
-              className="logout-button"
-            >
-              Log out   
-            </button>
+                {/* 🛡️ manually re-enable clicks only on this button */}
+                <button
+                  onClick={() => window.location.assign("/login")}
+                  className="logout-button"
+                  style={{ pointerEvents: "auto" }}
+                >
+                  Go to Login
+                </button>
+              </>
+            ) : (
+              <>
+                <h1>Welcome</h1>
+                <h2>
+                  Hello, <strong>{session?.user?.name || session?.user?.email?.split("@")[0]}</strong>
+                </h2>
+                <p>Checking your account...</p>
+              </>
+            )}
+          </div>
         </div>
-    </div> 
-    );
-}
+      </div>
+    </div>
+  );
 }

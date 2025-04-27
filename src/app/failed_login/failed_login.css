@@ -31,15 +31,7 @@
   }
 
   
-  .navbar-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    height: 64px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+
   
   .logo-container {
     display: flex;
@@ -131,7 +123,7 @@
   }
 
 
-  /* Add these styles to your existing dashboard.css file */
+  /* Added these styles to existing dashboard.css file */
 
 .user-data-section {
   background-color: #f8f9fa;

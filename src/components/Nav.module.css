@@ -1,5 +1,5 @@
 .navbar {
-  position: sticky;
+  position: static;
   top: 0;
   width: 100%;
   height: 60px;
@@ -8,7 +8,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 1rem;
+  padding: 0 2rem;
   z-index: 100;
 }
 
@@ -48,6 +48,7 @@
 .navLinks a {
   text-decoration: none;
   color: #333;
+  font-size: 0.8rem;
   font-weight: 500;
 }
 .navLinks a:hover {
@@ -80,10 +81,13 @@
   }
   .navLinks ul {
     flex-direction: column;
+    align-items: center;
     gap: 0;
   }
   .navLinks li {
     border-top: 1px solid #e0e0e0;
+    font-size: 1rem;
+    text-align: center;
   }
   .navLinks li:first-child {
     border-top: none;

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import "./surveycard.css";
 
 export function getTimeAgo(date: Date, now: Date = new Date()): string {
@@ -26,29 +27,35 @@ export function getTimeAgo(date: Date, now: Date = new Date()): string {
 }
 
 export interface SurveyCardProps {
+  id: string;
   title: string;
   description: string;
   datePublished: Date;
   timeToFill: string;
   numQuestions: number;
   imageUrl: string;
-  onClick?: () => void;
 }
 
 const SurveyCard: React.FC<SurveyCardProps> = ({
+  id,
   title,
   description,
   datePublished,
   timeToFill,
   numQuestions,
   imageUrl,
-  onClick
 }) => {
+  const router = useRouter();
+
+  const handleSurveyClick = () => {
+    router.push(`/surveys/view?id=${id}`);
+  };
+
   return (
     <div 
       className="survey-card-container"
-      onClick={onClick}
-      style={{ cursor: onClick ? "pointer" : "default" }}
+      onClick={handleSurveyClick}
+      style={{ cursor: "pointer" }}
     >
 
       <img src={imageUrl} alt="Survey" className="survey-card-image" />

@@ -29,6 +29,8 @@ export default function SurveyPage() {
   const [topic, setTopic] = useState("")
   const [objective, setObjective] = useState("")
   const [questions, setQuestions] = useState<string[]>([])
+  const [errors, setErrors] = useState<{ topic?: string; objective?: string }>({});
+
 
   // cleanup blob URLs
   useEffect(() => {
@@ -62,7 +64,25 @@ export default function SurveyPage() {
   const updateQuestion = (i: number, v: string) => setQuestions((q) => q.map((x,idx)=> idx===i?v:x))
 
   async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
+    e.preventDefault();
+
+    // Validate inputs
+    // Reset errors
+    const newErrors: { topic?: string; objective?: string } = {};
+
+    // Validate inputs
+    if (!topic.trim()) {
+      newErrors.topic = "Topic is required.";
+    }
+    if (!objective.trim()) {
+      newErrors.objective = "Objective is required.";
+    }
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     try {
       await createSurvey(
         userId || "",
@@ -85,6 +105,7 @@ export default function SurveyPage() {
     <main className={styles.container}>
       <h1 className={styles.title}>Create a survey</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
+        {errors.objective && <p style={{ color: "red" }}>{errors.objective}</p>}
 
         {/* UPLOAD FIELD */}
         <FileInput
@@ -97,7 +118,7 @@ export default function SurveyPage() {
 
         {/* CATEGORY DROPDOWN */}
         <div className={styles.field}>
-          <label htmlFor="category">Default Headers (optional)</label>
+          <label htmlFor="category">Default Images (optional)</label>
           <select
             id="category"
             className={styles.categorySelect}
@@ -126,7 +147,7 @@ export default function SurveyPage() {
 
         {/* TOPIC */}
         <div className={styles.field}>
-          <label htmlFor="topic">Topic</label>
+          <label htmlFor="topic">Topic <strong>*</strong></label>
           <input
             id="topic"
             type="text"
@@ -139,7 +160,7 @@ export default function SurveyPage() {
 
         {/* OBJECTIVE */}
         <div className={styles.field}>
-          <label htmlFor="objective">Objective</label>
+          <label htmlFor="objective">Objective <strong>*</strong></label>
           <input
             id="objective"
             type="text"

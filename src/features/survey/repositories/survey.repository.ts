@@ -1,5 +1,5 @@
 import { db } from '@/firebase/firebase';
-import { collection, addDoc, getDocs, query, where, updateDoc, doc, arrayUnion } from 'firebase/firestore';
+import { collection, addDoc, getDocs, getDoc, query, where, updateDoc, doc, arrayUnion, deleteDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { CreateSurveyInput } from '../types/surveyAppTypes';
 import { FirebaseSurvey, SurveyAnswer } from '../types/surveyFirebaseTypes';
@@ -137,6 +137,50 @@ export default class SurveyRepository {
   }
 
   /**
+   * Fetches a survey by ID
+   * @param surveyId - The ID of the survey
+   * @returns A promise resolving to the survey object
+   */
+  public async fetchSurveyById(surveyId: string): Promise<FirebaseSurvey | null> {
+    // Safety check for surveyId
+    if (!surveyId || typeof surveyId !== "string" || surveyId.trim() === "") {
+      throw new Error("Invalid survey ID provided.");
+    }
+  
+    try {
+      // Reference to the specific survey document
+      const surveyDocRef = doc(db, "surveys", surveyId);
+  
+      // Fetch the document from Firebase
+      const surveySnapshot = await getDoc(surveyDocRef);
+  
+      // Check if the document exists
+      if (!surveySnapshot.exists()) {
+        console.error(`Survey with ID ${surveyId} does not exist.`);
+        return null;
+      }
+  
+      // Map the document data to the FirebaseSurvey type
+      const surveyData = surveySnapshot.data();
+      const survey: FirebaseSurvey = {
+        id: surveyData.id, // Document ID
+        authorId: surveyData.authorId,
+        title: surveyData.title,
+        description: surveyData.description,
+        createdAt: surveyData.createdAt.toDate(), // Convert Firestore Timestamp to JavaScript Date
+        questions: surveyData.questions,
+        imageUrl: surveyData.imageUrl,
+        responses: surveyData.responses,
+      };
+  
+      return survey;
+    } catch (error) {
+      console.error(`Failed to fetch survey with ID ${surveyId}:`, error);
+      throw error;
+    }
+  }
+
+  /**
    * Fetches the surveys from Firebase.
    * @returns A promise resolving to an array of surveys.
    */
@@ -145,6 +189,7 @@ export default class SurveyRepository {
     const snapshot = await getDocs(surveysCollection);
 
     return snapshot.docs.map((doc: any) => ({
+      id: doc.id, // Include the document ID
       ...doc.data(),
     })) as FirebaseSurvey[];
   }
@@ -160,7 +205,7 @@ export default class SurveyRepository {
     const snapshot = await getDocs(userSurveysQuery);
 
     return snapshot.docs.map((doc: any) => ({
-      id: doc.id, // Include the document ID if needed
+      id: doc.id, // Include the document ID
       ...doc.data(),
     })) as FirebaseSurvey[];
   }
@@ -174,20 +219,66 @@ export default class SurveyRepository {
    */
   public async submitSurveyResponse(
     surveyId: string,
-    response: SurveyAnswer,
+    responses: SurveyAnswer[],
     respondentId: string
   ): Promise<void> {
+    if (!responses || responses.length === 0) {
+      throw new Error("Responses array cannot be null or empty.");
+    }
+  
     const surveyDocRef = doc(db, "surveys", surveyId);
     const userDocRef = doc(db, "users", respondentId); // Reference to the user's document
+  
+    // Build the response object to be added
+    const responsePayload = {
+      respondentId,
+      responses,
+      submittedAt: new Date().toISOString(), // Add a timestamp for when the response was submitted
+    };
+  
+    try {
+      // Check if the user has already responded to this survey
+      const userDocSnapshot = await getDoc(userDocRef);
+      if (userDocSnapshot.exists()) {
+        const userData = userDocSnapshot.data();
+        if (userData.respondedSurveys && userData.respondedSurveys.includes(surveyId)) {
+          return; // User has already responded to this survey, so we can skip adding the response
+        }
+      }
+  
+      // Update the survey document with the new response
+      await updateDoc(surveyDocRef, {
+        responses: arrayUnion(responsePayload), // Add the response payload to the responses array
+      });
+  
+      // Update the user's document to track that they have responded to this survey
+      await updateDoc(userDocRef, {
+        respondedSurveys: arrayUnion(surveyId), // Add the survey ID to the user's respondedSurveys array
+      });
+  
+      console.log("Survey response submitted successfully.");
+    } catch (error) {
+      console.error("Error submitting survey response:", error);
+      throw error;
+    }
+  }
 
-    // Update the survey document with the new response
-    await updateDoc(surveyDocRef, {
-      responses: arrayUnion(response), // Add the response to the responses array
-    });
-
-    // Update the user's document to mark the survey as responded
-    await updateDoc(userDocRef, {
-      [`surveyResponses.${surveyId}`]: true, // Update the surveyResponses field
-    });
+  /**
+   * Deletes a survey by ID
+   * @param surveyId - The ID of the survey to delete
+   * @returns A promise that resolves when the survey is deleted
+   */
+  public async deleteSurvey(surveyId: string): Promise<void> {
+    const surveyDocRef = doc(db, "surveys", surveyId);
+  
+    // Delete associated responses (if stored in a subcollection)
+    const responsesCollectionRef = collection(db, `surveys/${surveyId}/responses`);
+    const responsesSnapshot = await getDocs(responsesCollectionRef);
+  
+    const deletePromises = responsesSnapshot.docs.map((doc) => deleteDoc(doc.ref));
+    await Promise.all(deletePromises);
+  
+    // Delete the survey document
+    await deleteDoc(surveyDocRef);
   }
 }

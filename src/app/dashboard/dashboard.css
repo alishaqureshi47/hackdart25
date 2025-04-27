@@ -6,6 +6,10 @@
   overflow: hidden;
 }
 
+body {
+  overflow: hidden;
+}
+
 /* Sidebar */
 .sidebar {
   width: 250px;
@@ -113,6 +117,8 @@
   margin-left: 250px;
   padding: 2rem;
   box-sizing: border-box;
+  overflow-y: auto;
+  max-height: calc(100vh - 60px);
 }
 .cards-grid {
   display: grid;

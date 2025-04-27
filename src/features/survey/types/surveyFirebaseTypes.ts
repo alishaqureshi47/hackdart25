@@ -1,5 +1,7 @@
 export interface FirebaseSurvey {
+  id: string; // Document ID
   authorId: string;
+  // domain: string; //TODO
   title: string;
   description: string;
   createdAt: Date;

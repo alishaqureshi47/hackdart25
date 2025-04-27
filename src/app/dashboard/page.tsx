@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { deleteUser } from '@/features/auth/deleteUser';
 import { redirect } from 'next/navigation';
 import './dashboard.css';
 import { useRouter } from 'next/navigation';
@@ -22,6 +21,7 @@ const DashboardPage: React.FC = () => {
       try {
         const fetchedSurveys = await fetchAllSurveys();
         setSurveys(fetchedSurveys);
+        console.log(fetchedSurveys);
       } catch (error) {
         console.error("Error fetching surveys:", error);
       } finally {
@@ -41,12 +41,12 @@ const DashboardPage: React.FC = () => {
       {/* DESKTOP SIDEBAR */}
       <aside className="sidebar">
         <nav className="sidebar-nav">
-          <button
+          {/* <button
             className="sidebar-button explore"
             onClick={() => router.push("/surveys/explore")}
           >
             Explore
-          </button>
+          </button> */}
           <button
             className="sidebar-button create"
             onClick={() => router.push("/surveys/create")}
@@ -84,6 +84,7 @@ const DashboardPage: React.FC = () => {
           ) : (
             surveys.map((survey, index) => (
               <SurveyCard
+                id={survey.id}
                 key={index}
                 title={survey.title}
                 description={survey.description}
@@ -99,12 +100,12 @@ const DashboardPage: React.FC = () => {
 
       {/* MOBILE‐ONLY BOTTOM BAR */}
       <nav className="mobile-bar">
-        <button
+        {/* <button
           className="sidebar-button explore"
           onClick={() => router.push("/surveys/explore")}
         >
           Explore
-        </button>
+        </button> */}
         <button
           className="sidebar-button create"
           onClick={() => router.push("/surveys/create")}

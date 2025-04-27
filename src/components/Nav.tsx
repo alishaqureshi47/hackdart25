@@ -17,7 +17,7 @@ export default function Nav({ avatarSrc }: NavProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   function handleNavClick() {
-    setMenuOpen(false)
+    setMenuOpen(false);
   }
 
   return (

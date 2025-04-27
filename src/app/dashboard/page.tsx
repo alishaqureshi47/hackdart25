@@ -1,17 +1,37 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { deleteUser } from '@/features/auth/deleteUser';
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
 import './dashboard.css';
 import { useRouter } from 'next/navigation';
 import SurveyCard from '@/shared/components/surveycard';
-
+import SurveyRepository from '@/features/survey/repositories/survey.repository';
+import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 
 const DashboardPage: React.FC = () => {
+  const surveyRepo = new SurveyRepository();
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  const [loading, setLoading] = useState(true);
+  const [surveys, setSurveys] = useState<FirebaseSurvey[]>([]);
+
+  useEffect(() => {
+    const loadSurveys = async () => {
+      try {
+        const fetchedSurveys = await surveyRepo.fetchAllSurveys();
+        setSurveys(fetchedSurveys);
+      } catch (error) {
+        console.error("Error fetching surveys:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSurveys();
+  }, []);
 
   if (status === "unauthenticated") {
     redirect("/login");
@@ -59,29 +79,39 @@ const DashboardPage: React.FC = () => {
 
       {/* MAIN CONTENT */}
       <main className="main-content">
-        <div className="filter-sort-bar">
-          <div className="filter-section">
-            <label htmlFor="filter">Filter by:</label>
-            <select id="filter" className="filter-select">
-              <option value="topic">Topic</option>
-              <option value="length">Length</option>
-              <option value="time">Time Published</option>
-            </select>
-          </div>
-          <div className="sort-section">
-            <label htmlFor="sort">Sort by:</label>
-            <select id="sort" className="sort-select">
-              <option value="popular">Most Popular</option>
-              <option value="a-z">A-Z</option>
-              <option value="length">Length (Longest to Shortest)</option>
-              <option value="length">Length (Shortest to Longest)</option>
-            </select>
-          </div>
+        <div className="cards-grid">
+          {loading ? (
+            <p>Loading surveys...</p>
+          ) : (
+            surveys.map((survey, index) => (
+              <SurveyCard
+                key={index}
+                title={survey.title}
+                description={survey.description}
+                datePublished={new Date(survey.createdAt)}
+                timeToFill={Math.max(1, Math.floor(survey.questions.length / 2)).toString()}
+                numQuestions={survey.questions.length}
+                imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
+              />
+            ))
+          )}
         </div>
         <div className="cards-grid">
-          <div className="survey-card">Survey Placeholder</div>
-          <div className="survey-card">Survey Placeholder</div>
-          <div className="survey-card">Survey Placeholder</div>
+          {loading ? (
+            <p>Loading surveys...</p>
+          ) : (
+            surveys.map((survey, index) => (
+              <SurveyCard
+                key={index}
+                title={survey.title}
+                description={survey.description}
+                datePublished={new Date(survey.createdAt)}
+                timeToFill={Math.max(1, Math.floor(survey.questions.length / 2)).toString()}
+                numQuestions={survey.questions.length}
+                imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
+              />
+            ))
+          )}
         </div>
       </main>
 

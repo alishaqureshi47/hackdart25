@@ -1,12 +1,20 @@
-// app/survey/create/page.tsx
 "use client"
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useUser } from "@/contexts/UserContext";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { createSurvey } from "@/features/survey/services/createSurvey";
 import styles from "./page.module.css";
+
+const CATEGORY_IMAGES = [
+  { label: "Business & Entrepreneurship",    img: "/business.png" },
+  { label: "Creative & Design",              img: "/creative.png" },
+  { label: "Technology & Innovation",         img: "/tech.png" },
+  { label: "Social & Community",              img: "/social.png" },
+  { label: "Health & Wellness",               img: "/health.png" },
+  { label: "Environment & Sustainability",    img: "/env.png" },
+]
 
 export default function SurveyPage() {
   const { data: session, status } = useSession();
@@ -18,18 +26,52 @@ export default function SurveyPage() {
   const [topic, setTopic] = useState("");
   const [objective, setObjective] = useState("");
   const [isCreatingSurvey, setIsCreatingSurvey] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [previewUrl, setPreviewUrl] = useState<string>("")
   
   // 1) Start with an empty array (no fields shown)
   const [questions, setQuestions] = useState<string[]>([])
 
-  const addQuestion = () => setQuestions((qs) => [...qs, ""])
-  const removeQuestion = (idx: number) =>
-    setQuestions((qs) => qs.filter((_, i) => i !== idx))
-  const updateQuestion = (idx: number, val: string) =>
-    setQuestions((qs) => qs.map((q, i) => (i === idx ? val : q)))
+  // Clean up any blob URL on unmount
+  useEffect(() => {
+    return () => {
+      if (previewUrl.startsWith("blob:")) {
+        URL.revokeObjectURL(previewUrl)
+      }
+    }
+  }, [previewUrl])
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  // When user picks a file
+  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (file) {
+      // free old blob
+      if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl)
+      const url = URL.createObjectURL(file)
+      setPreviewUrl(url)
+    }
+  }
+
+  // When user clicks a category
+  function attachPreset(imgPath: string) {
+    // clear file input so new uploads can fire change events
+    if (fileInputRef.current) fileInputRef.current.value = ""
+    // revoke old blob if any
+    if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl)
+    // set to static public image
+    setPreviewUrl(imgPath)
+  }
+
+  // question handlers
+  const addQuestion    = () => setQuestions((q) => [...q, ""])
+  const removeQuestion = (i: number) => setQuestions((q) => q.filter((_, idx) => idx !== i))
+  const updateQuestion = (i: number, v: string) => setQuestions((q) => q.map((x, idx) => idx === i ? v : x))
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    // If you need an actual File on submit, you'd have to fetch previewUrl if static.
+    console.log({ topic, objective, questions, headerImage: previewUrl })
+    alert("Check console for payload")
   }
 
   return (
@@ -37,7 +79,40 @@ export default function SurveyPage() {
       <h1 className={styles.title}>Create a survey</h1>
 
       <form className={styles.form} onSubmit={handleSubmit}>
-        {/* Topic */}
+        {/* UPLOAD FIELD */}
+        <div className={styles.uploadField}>
+          <label htmlFor="header">Header Image (optional)</label>
+          <input
+            ref={fileInputRef}
+            id="header"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+          />
+        </div>
+
+        {/* PRESET BUTTONS */}
+        <div className={styles.categoryButtons}>
+          {CATEGORY_IMAGES.map(({ label, img }) => (
+            <button
+              type="button"
+              key={label}
+              onClick={() => attachPreset(img)}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+
+        {/* LIVE PREVIEW */}
+        {previewUrl && (
+          <div className={styles.headerPreview}>
+            {/* <img> works for both blob: and /public URLs */}
+            <img src={previewUrl} alt="Preview" className={styles.headerImg} />
+          </div>
+        )}
+
+        {/* TOPIC & OBJECTIVE */}
         <div className={styles.field}>
           <label htmlFor="topic">Topic</label>
           <input
@@ -50,7 +125,6 @@ export default function SurveyPage() {
           />
         </div>
 
-        {/* Objective */}
         <div className={styles.field}>
           <label htmlFor="objective">Objective</label>
           <input
@@ -63,10 +137,9 @@ export default function SurveyPage() {
           />
         </div>
 
-        {/* Dynamic Questions */}
+        {/* DYNAMIC QUESTIONS */}
         <div className={styles.field}>
           <label>Specific Questions</label>
-
           {questions.map((q, idx) => (
             <div key={idx} className={styles.questionField}>
               <input
@@ -74,21 +147,17 @@ export default function SurveyPage() {
                 placeholder={`Question ${idx + 1}`}
                 value={q}
                 onChange={(e) => updateQuestion(idx, e.target.value)}
-                // 2) removed `required` here
               />
-              {questions.length > 0 && (
-                <button
-                  type="button"
-                  className={styles.removeBtn}
-                  onClick={() => removeQuestion(idx)}
-                  aria-label={`Remove question ${idx + 1}`}
-                >
-                  ✕
-                </button>
-              )}
+              <button
+                type="button"
+                className={styles.removeBtn}
+                onClick={() => removeQuestion(idx)}
+                aria-label="Remove question"
+              >
+                ✕
+              </button>
             </div>
           ))}
-
           <button
             type="button"
             className={styles.addBtn}
@@ -98,7 +167,7 @@ export default function SurveyPage() {
           </button>
         </div>
 
-        {/* Submit */}
+        {/* SUBMIT */}
         <button type="submit" className={styles.button}>
           Create
         </button>

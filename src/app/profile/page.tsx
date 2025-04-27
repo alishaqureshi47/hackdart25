@@ -1,17 +1,37 @@
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { deleteUser } from '@/features/auth/deleteUser';
 import { redirect } from "next/navigation";
-import './profile.css'; // assuming your CSS file is named profile.css
+import './profile.css'; 
+import YourSurveyCard from "@/shared/components/yoursurveycard/yoursurveycard";
+import { fetchAllSurveys } from '@/features/survey/services/fetchAllSurveys';
+import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
+
 
 const ProfilePage: React.FC = () => {
   const { data: session, status } = useSession();
   if (status === "unauthenticated") {
     redirect("/login");
   }
+const [loading, setLoading] = useState(true);
+  const [surveys, setSurveys] = useState<FirebaseSurvey[]>([]);
 
+  useEffect(() => {
+    const loadSurveys = async () => {
+      try {
+        const fetchedSurveys = await fetchAllSurveys();
+        setSurveys(fetchedSurveys);
+      } catch (error) {
+        console.error("Error fetching surveys:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSurveys();
+  }, []);
   function handleDeleteProfile() {
     if (session?.user?.email) {
       deleteUser(session.user.email);
@@ -74,6 +94,27 @@ const ProfilePage: React.FC = () => {
           <div className="survey-card">Survey Placeholder</div>
         </div>
       </div>
+
+      <div className="cards-grid">
+          {loading ? (
+            <p>Loading surveys...</p>
+          ) : (
+            surveys.map((survey, index) => (
+              <YourSurveyCard
+                key={index}
+                title={survey.title}
+                description={survey.description}
+                datePublished={new Date(survey.createdAt)}
+                timeToFill={Math.max(1, Math.floor(survey.questions.length / 2)).toString()}
+                numQuestions={survey.questions.length}
+                imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
+                onEdit={() => console.log("Edit clicked", survey.title)}
+                onViewResponses={() => console.log("View Responses clicked", survey.title)}
+                onClick={() => console.log("Preview clicked", survey.title)}
+              />
+            ))
+          )}
+        </div>
 
       {/* Delete Profile Button */}
       <div className="delete-profile-container">

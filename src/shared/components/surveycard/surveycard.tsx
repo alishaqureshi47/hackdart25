@@ -25,13 +25,14 @@ export function getTimeAgo(date: Date, now: Date = new Date()): string {
   return "Just now";
 }
 
-interface SurveyCardProps {
+export interface SurveyCardProps {
   title: string;
   description: string;
   datePublished: Date;
   timeToFill: string;
   numQuestions: number;
   imageUrl: string;
+  onClick?: () => void;
 }
 
 const SurveyCard: React.FC<SurveyCardProps> = ({
@@ -41,9 +42,15 @@ const SurveyCard: React.FC<SurveyCardProps> = ({
   timeToFill,
   numQuestions,
   imageUrl,
+  onClick
 }) => {
   return (
-    <div className="survey-card-container">
+    <div 
+      className="survey-card-container"
+      onClick={onClick}
+      style={{ cursor: onClick ? "pointer" : "default" }}
+    >
+
       <img src={imageUrl} alt="Survey" className="survey-card-image" />
       <div className="survey-card-content">
         <div className="survey-card-header">

@@ -6,7 +6,7 @@ import { deleteUser } from '@/features/auth/deleteUser';
 import { redirect } from 'next/navigation';
 import './dashboard.css';
 import { useRouter } from 'next/navigation';
-import SurveyCard from '@/shared/components/surveycard';
+import SurveyCard from '@/shared/components/surveycard/surveycard';
 import { fetchAllSurveys } from '@/features/survey/services/fetchAllSurveys';
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 

@@ -8,6 +8,9 @@ import './profile.css';
 import YourSurveyCard from "@/shared/components/yoursurveycard/yoursurveycard";
 import { fetchAllSurveys } from '@/features/survey/services/fetchAllSurveys';
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
+import SurveyAnswersPage from '@/app/surveyanswers/page';
+import { useRouter } from 'next/navigation';
+
 
 
 const ProfilePage: React.FC = () => {
@@ -15,6 +18,8 @@ const ProfilePage: React.FC = () => {
   if (status === "unauthenticated") {
     redirect("/login");
   }
+  const router = useRouter();
+
 const [loading, setLoading] = useState(true);
   const [surveys, setSurveys] = useState<FirebaseSurvey[]>([]);
 
@@ -94,6 +99,7 @@ const [loading, setLoading] = useState(true);
           ) : (
             surveys.map((survey, index) => (
               <YourSurveyCard
+                id={survey.id}
                 key={index}
                 title={survey.title}
                 description={survey.description}
@@ -102,7 +108,7 @@ const [loading, setLoading] = useState(true);
                 numQuestions={survey.questions.length}
                 imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
                 onEdit={() => console.log("Edit clicked", survey.title)}
-                onViewResponses={() => console.log("View Responses clicked", survey.title)}
+                onViewResponses={() => router.push(`/surveyanswers`)}
                 onClick={() => console.log("Preview clicked", survey.title)}
               />
             ))

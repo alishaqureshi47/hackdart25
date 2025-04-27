@@ -17,7 +17,7 @@ This is a web-based survey application built with Next.js and TypeScript. The ap
 - **`public`**: Static assets like images and icons.
 
 ## Installation
-
+You can access it in the sub-domain: https://quipp.vercel.app/ 
 1. Clone the repository:
    ```bash
    git clone <repository-url>
@@ -31,7 +31,8 @@ In your powershell,
     ```
     Now you should be good to go!
 
-## Contributing
+## Need Help? & Contributing
+Please contact anyone of our developers and we will try to resolve it as soon as possible!
 Tina Pan <tina.pan.28@dartmouth.edu>
 Alejandro Manrique Nunez <alejandro.s.manrique.nunez.28@dartmouth.edu>
 Alisha Ahmad Qureshi <alisha.ahmad.qureshi.28@dartmouth.edu>

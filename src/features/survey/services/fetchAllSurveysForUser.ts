@@ -1,6 +1,6 @@
 import SurveyRepository from "../repositories/survey.repository"; 
 
-async function fetchAllSurveysForUser(userId: string) {
+export async function fetchAllSurveysForUser(userId: string) {
 	const surveyRepo = new SurveyRepository();
 
 	try {

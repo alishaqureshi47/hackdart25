@@ -7,11 +7,10 @@ import { redirect } from 'next/navigation';
 import './dashboard.css';
 import { useRouter } from 'next/navigation';
 import SurveyCard from '@/shared/components/surveycard';
-import SurveyRepository from '@/features/survey/repositories/survey.repository';
+import { fetchAllSurveys } from '@/features/survey/services/fetchAllSurveys';
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 
 const DashboardPage: React.FC = () => {
-  const surveyRepo = new SurveyRepository();
   const { data: session, status } = useSession();
   const router = useRouter();
 
@@ -21,7 +20,7 @@ const DashboardPage: React.FC = () => {
   useEffect(() => {
     const loadSurveys = async () => {
       try {
-        const fetchedSurveys = await surveyRepo.fetchAllSurveys();
+        const fetchedSurveys = await fetchAllSurveys();
         setSurveys(fetchedSurveys);
       } catch (error) {
         console.error("Error fetching surveys:", error);
@@ -79,23 +78,6 @@ const DashboardPage: React.FC = () => {
 
       {/* MAIN CONTENT */}
       <main className="main-content">
-        <div className="cards-grid">
-          {loading ? (
-            <p>Loading surveys...</p>
-          ) : (
-            surveys.map((survey, index) => (
-              <SurveyCard
-                key={index}
-                title={survey.title}
-                description={survey.description}
-                datePublished={new Date(survey.createdAt)}
-                timeToFill={Math.max(1, Math.floor(survey.questions.length / 2)).toString()}
-                numQuestions={survey.questions.length}
-                imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
-              />
-            ))
-          )}
-        </div>
         <div className="cards-grid">
           {loading ? (
             <p>Loading surveys...</p>

@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import ModerationResult from "../types/moderationTypes";
 
 export class ModerationRepository {
   private openai: OpenAI;
@@ -18,7 +19,7 @@ export class ModerationRepository {
   async moderateContent(
     content: string,
     imageUrl?: string
-  ): Promise<{ isFlagged: boolean; reasons: Map<string, number> }> {
+  ): Promise<ModerationResult> {
     try {
       // Create moderation request based on inputs
       let moderation: OpenAI.Moderations.ModerationCreateResponse;
@@ -54,7 +55,7 @@ export class ModerationRepository {
 
       const isFlagged = Math.max(...Object.values(categoryScores)) > 0.95;
 
-      return { isFlagged, reasons };
+      return { isFlagged, reasons } as ModerationResult;
     } catch (error) {
       console.error("Error moderating content:", error);
       throw new Error("Failed to moderate content");

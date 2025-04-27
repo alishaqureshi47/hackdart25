@@ -1,5 +1,5 @@
 import { db } from '@/firebase/firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { CreateSurveyInput } from '../types/surveyAppTypes';
 import { FirebaseSurvey } from '../types/surveyFirebaseTypes';
@@ -134,5 +134,18 @@ export default class SurveyRepository {
       ${index + 1}. ${q.questionText} (${q.questionDetails})`).join('\n')}
       Range questions should have min and max fields as specified in the schema, and the rest should NOT have min and max fields. Range questions should NOT have an options field.
       Range questions should be in the format of: 'In a scale of 1 to 10, how would you rate your experience with this product?' or 'On a scale of 1 to 15, how comfortable do you feel with X?'`;
+  }
+
+  /**
+   * Fetches the surveys from Firebase.
+   * @returns A promise resolving to an array of surveys.
+   */
+  public async fetchAllSurveys(): Promise<FirebaseSurvey[]> {
+    const surveysCollection = collection(db, "surveys");
+    const snapshot = await getDocs(surveysCollection);
+
+    return snapshot.docs.map((doc: any) => ({
+      ...doc.data(),
+    })) as FirebaseSurvey[];
   }
 }

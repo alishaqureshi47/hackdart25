@@ -171,7 +171,7 @@ export default class SurveyRepository {
         createdAt: surveyData.createdAt,
         questions: surveyData.questions,
         imageUrl: surveyData.imageUrl, // Add the missing imageUrl field
-        responses: surveyData.responses, // Add the missing responses field
+        responses: surveyData.responses as Array<any>, // Directly assign the array
       };
 
       // If userId is provided, ensure it matches the authorId

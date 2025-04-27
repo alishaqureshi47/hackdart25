@@ -8,7 +8,7 @@ import './profile.css';
 import YourSurveyCard from "@/shared/components/yoursurveycard/yoursurveycard";
 import { fetchAllSurveysForUser } from '@/features/survey/services/fetchAllSurveysForUser';
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
-import SurveyAnswersPage from '@/app/surveyanswers/page';
+import SurveyAnswersPage from '@/shared/components/surveys/SurveyAnswersDisplay';
 import { useRouter } from 'next/navigation';
 import { useUser } from '@/contexts/UserContext';
 
@@ -111,7 +111,7 @@ const ProfilePage: React.FC = () => {
                 numQuestions={survey.questions.length}
                 imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
                 onEdit={() => router.push(`/surveys/edit?id=${survey.id}`)}
-                onViewResponses={() => router.push(`/surveyanswers/${survey.id}`)}
+                onViewResponses={() => router.push(`/surveys/results?id=${survey.id}`)}
                 onClick={() => router.push(`/surveys/view?id=${survey.id}`)}
               />
             ))

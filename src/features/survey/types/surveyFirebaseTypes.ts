@@ -7,7 +7,7 @@ export interface FirebaseSurvey {
   createdAt: Date;
   questions: SurveyQuestion[];
   imageUrl: string;
-  responses: SurveyAnswer[]; // Array of answers for all questions
+  responses: object[]; // Array of answers for all questions
 }
 
 export type SurveyQuestion =

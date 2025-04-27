@@ -1,15 +1,19 @@
 'use client';
 
-import { FirebaseSurvey, SurveyAnswer, MultipleChoiceAnswer, TextAnswer, RangeAnswer } from '@/features/survey/types/surveyFirebaseTypes';
+import { FirebaseSurvey, SurveyQuestion, SurveyAnswer, MultipleChoiceAnswer, TextAnswer, RangeAnswer } from '@/features/survey/types/surveyFirebaseTypes';
 import { 
   PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid,
   Tooltip, ResponsiveContainer, Legend, Text
 } from 'recharts';
 import './surveyanswers.css';
 import { useState } from 'react';
-import { useSession } from 'next-auth/react';
-import { redirect } from 'next/navigation';
-import { useUser } from '@/contexts/UserContext';
+
+// Define the new structure
+export interface SurveyResponse {
+  respondentId: string; // ID of the user who submitted the survey
+  submittedAt: Date; // Timestamp of when the survey was submitted
+  responses: SurveyAnswer[]; // Array of answers for this respondent
+}
 
 interface DataPoint {
   name: string;
@@ -19,18 +23,9 @@ interface DataPoint {
 // Color palette for charts
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff7f50', '#00c49f', '#ffbb28', '#ff8042', '#d0ed57', '#a4de6c', '#d88484'];
 
-export default function SurveyAnswersPage({ survey }: { survey: FirebaseSurvey }) {
-  const { data: session, status } = useSession();
-  if (status === "unauthenticated") {
-    redirect("/login");
-  }
-
-  const { userId } = useUser();
-  if (survey.authorId !== userId) { // cant see this!
-    redirect("/notfound");
-  }
+export default function SurveyAnswersDisplay({ survey }: { survey: FirebaseSurvey }) {
   const questions = survey.questions;
-  const allResponses = (survey.responses ?? []) as SurveyAnswer[];
+  const allResponses = (survey.responses ?? []) as SurveyResponse[];
   const [showPieChart, setShowPieChart] = useState<{[key: number]: boolean}>({});
   
   // Toggle between pie and bar for multiple choice
@@ -45,22 +40,41 @@ export default function SurveyAnswersPage({ survey }: { survey: FirebaseSurvey }
     return <div className="survey-loading">No responses found.</div>;
   }
 
+  // Get total respondents count
+  const totalRespondents = allResponses.length;
+
+  // Extract all answers across all responses
+  const extractAnswersForQuestion = (questionIndex: number, questionType: string): SurveyAnswer[] => {
+    const allAnswers: SurveyAnswer[] = [];
+    
+    allResponses.forEach(response => {
+      // Each respondent's answers are stored in response.responses
+      const answers = response.responses || [];
+      
+      // Find the answer matching the current question
+      const answer = answers.find((a, idx) => 
+        a.questionType === questionType && idx === questionIndex
+      );
+      
+      if (answer) {
+        allAnswers.push(answer);
+      }
+    });
+    
+    return allAnswers;
+  };
+
   return (
     <div className="survey-page-container">
       <div className="survey-content-wrapper">
         <h1 className="survey-title">{survey.title}</h1>
         <div className="survey-total-responses">
-          Total responses: <span className="highlight">{allResponses.length/questions.length}</span>
+          Total responses: <span className="highlight">{totalRespondents}</span>
         </div>
 
         {questions.map((question, qIndex) => {
-          // Get answers for this specific question by index
-          const answersForThisQuestion = allResponses.filter((response) => {
-            // We need to match both type AND position in the survey
-            return response.questionType === question.questionType && 
-                   allResponses.indexOf(response) % questions.length === qIndex;
-          });
-          
+          // Get all answers for this question across all respondents
+          const answersForThisQuestion = extractAnswersForQuestion(qIndex, question.questionType);
           const hasResponses = answersForThisQuestion.length > 0;
 
           return (
@@ -109,7 +123,7 @@ export default function SurveyAnswersPage({ survey }: { survey: FirebaseSurvey }
                   {question.questionType === 'range' && (
                     <RangeBarChart 
                       answers={answersForThisQuestion as RangeAnswer[]} 
-                      maxRange={(question.rangeSize || 5)} 
+                      maxRange={(question as any).rangeSize || 5} 
                     />
                   )}
                   
@@ -233,14 +247,8 @@ function MultipleChoiceBarChart({ answers }: { answers: MultipleChoiceAnswer[] }
 
 // Range Bar Chart Component
 function RangeBarChart({ answers, maxRange }: { answers: RangeAnswer[], maxRange: number }) {
-  // Define an interface for the data points
-  interface RangeDataPoint {
-    name: string;
-    value: number;
-  }
-
   // Prepare data with all possible values (1 to maxRange)
-  const fullRangeData: RangeDataPoint[] = [];
+  const fullRangeData: DataPoint[] = [];
   for (let i = 1; i <= maxRange; i++) {
     fullRangeData.push({ name: `${i}`, value: 0 });
   }
@@ -257,7 +265,6 @@ function RangeBarChart({ answers, maxRange }: { answers: RangeAnswer[], maxRange
   });
   
   return (
-    // Rest of your component remains the same
     <div className="chart-container">
       <ResponsiveContainer width="100%" height={300}>
         <BarChart
@@ -302,7 +309,7 @@ function TextResponseList({ answers }: { answers: TextAnswer[] }) {
 }
 
 // Helper: count multiple choice answers
-function countMultipleChoiceAnswers(answers: MultipleChoiceAnswer[]) {
+function countMultipleChoiceAnswers(answers: MultipleChoiceAnswer[]): DataPoint[] {
   const counts: { [option: string]: number } = {};
   answers.forEach((a) => {
     const option = a.selectedOption;
@@ -312,7 +319,7 @@ function countMultipleChoiceAnswers(answers: MultipleChoiceAnswer[]) {
 }
 
 // Helper: count range slider answers
-function countRangeAnswers(answers: RangeAnswer[]) {
+function countRangeAnswers(answers: RangeAnswer[]): DataPoint[] {
   const counts: { [num: number]: number } = {};
   answers.forEach((a) => {
     const value = a.selectedValue;

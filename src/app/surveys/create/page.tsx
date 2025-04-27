@@ -67,11 +67,32 @@ export default function SurveyPage() {
   const removeQuestion = (i: number) => setQuestions((q) => q.filter((_, idx) => idx !== i))
   const updateQuestion = (i: number, v: string) => setQuestions((q) => q.map((x, idx) => idx === i ? v : x))
 
-  function handleSubmit(e: React.FormEvent) {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // If you need an actual File on submit, you'd have to fetch previewUrl if static.
-    console.log({ topic, objective, questions, headerImage: previewUrl })
-    alert("Check console for payload")
+    console.log({ topic, objective, questions })
+    // call API
+    if (!userId) {
+      console.error("User ID is not available");
+      return;
+    }
+    setIsCreatingSurvey(true);
+    createSurvey(userId, topic, objective, questions) // pass author and info
+      .then(() => {
+        // Handle success (e.g., show a success message or redirect)
+        console.log("Survey created successfully");
+      })
+      .catch((error) => {
+        // Handle error (e.g., show an error message)
+        console.error("Error creating survey:", error);
+      })
+      .finally(() => {
+        // Reset the form or redirect after survey creation
+        setIsCreatingSurvey(false);
+        setTopic("");
+        setObjective("");
+        setQuestions([]);
+        alert("Survey created successfully");
+      });
   }
 
   return (

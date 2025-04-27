@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+  }
+  
+  .card {
+    background: white;
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+  }
+  
+  .errorCode {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #ef4444; /* red-500 */
+    margin-bottom: 1rem;
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  
+  .message {
+    color: #6b7280; /* gray-600 */
+    margin-bottom: 2rem;
+  }
+  
+  .button {
+    background-color: #52A46E; 
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s;
+  }
+  
+  .button:hover {
+    background-color: #2563eb; /* blue-600 */
+  }
+  

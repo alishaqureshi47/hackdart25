@@ -14,12 +14,11 @@
 
 /* page title */
 .title {
-  /* same size, weight & color as your .field labels */
   font-size: 2.5rem;
   font-weight: 500;
   color: #444;
   margin-bottom: 1rem;
-  text-align: left;    /* match label alignment */
+  text-align: left;
 }
 
 /* form wrapper */
@@ -45,6 +44,7 @@
   margin-bottom: 1rem;
   width: 100%;
 }
+
 /* CATEGORY DROPDOWN STYLES */
 .categorySelect {
   width: 100%;
@@ -55,14 +55,13 @@
   background: #fff;
   border: 1px solid #bbb;
   border-radius: 0.5rem;
-  appearance: none;         /* remove native arrow */
-  background-image: url("data:image/svg+xml;charset=US-ASCII,\%3Csvg%20width%3D'10'%20height%3D'7'%20viewBox%3D'0%200%2010%207'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E\%3Cpath%20d%3D'M0%200l5%207%205-7'%20fill%3D'%23666'%20/%3E%3C/svg%3E");
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'7'%20viewBox%3D'0%200%2010%207'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpath%20d%3D'M0%200l5%207%205-7'%20fill%3D'%23666'%20/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 1rem center;
   background-size: 10px 7px;
   cursor: pointer;
 }
-
 .categorySelect:focus {
   outline: none;
   border-color: #e67a7a;
@@ -77,6 +76,12 @@
   border-radius: 0.5rem;
   overflow: hidden;
   background: #ccc;
+}
+.headerPreview img,
+.headerPreview .headerImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 /* each label + input group */
@@ -171,19 +176,28 @@
   background: #e67661;
 }
 
-.headerPreview {
-  position: relative;
-  width: 100%;
-  height: 120px;
-  border-radius: 0.5rem;
-  overflow: hidden;
-  background: #ccc;
+/* ====================================== */
+/*  NEW: Number of Questions & Moderation */
+/* ====================================== */
+
+/* checkbox label styling */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
 }
 
-/* we switched to a plain <img> for blob support */
-.headerPreview img,
-.headerPreview .headerImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* number‐input styling */
+.field input[type="number"] {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #bbb;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+.field input[type="number"]:focus {
+  outline: none;
+  border-color: #e67a7a;
+  box-shadow: 0 0 0 2px rgba(230,123,122,0.3);
 }

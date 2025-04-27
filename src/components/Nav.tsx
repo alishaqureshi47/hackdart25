@@ -23,8 +23,8 @@ export default function Nav({ avatarSrc }: NavProps) {
   return (
     <header className={styles.navbar}>
       {/* Brand / logo on the left */}
-      <Link href="/" className={styles.brand} onClick={handleNavClick}>
-        <img src="/logo.png" alt="Logo" width={30} height={30} />
+      <Link href="/dashboard" className={styles.brand} onClick={handleNavClick}>
+        <img src="/logo.png" alt="Logo" width={30} />
         <span className={styles.brandName}>Quipp</span>
       </Link>
 

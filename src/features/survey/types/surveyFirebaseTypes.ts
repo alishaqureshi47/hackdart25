@@ -26,6 +26,4 @@ export interface RangeQuestion {
   questionType: "range";
   min: number; // Minimum value for the range
   max: number; // Maximum value for the range
-  minDescription?: string; // Optional description for the minimum value
-  maxDescription?: string; // Optional description for the maximum value
 }

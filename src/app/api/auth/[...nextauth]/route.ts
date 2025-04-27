@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import type { NextAuthOptions } from "next-auth";
-import { createUser } from "@/features/auth/createUser"; // Ensure this is the correct path
+import { createUser } from "@/features/auth/createUser";
 
 declare module "next-auth" {
   interface Session {
@@ -10,11 +10,13 @@ declare module "next-auth" {
       email?: string | null;
       name?: string | null;
       image?: string | null;
+      profilePicture?: string | null;
     };
   }
 
   interface JWT {
     id?: string;
+    profilePicture?: string | null;
   }
 }
 
@@ -33,7 +35,7 @@ export const authOptions: NextAuthOptions = {
       try {
         // Check if the user already exists
         if (user.email && user.name) {
-          await createUser(user.email, user.name); // Call your createUser function
+          await createUser(user.email, user.name, user.image ?? ""); // create user
         }
         return true; // Allow sign-in
       } catch (error) {
@@ -43,14 +45,16 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
-        // Save the user id to the token (if needed)
+        // Save the user id and profile picture to the token
         token.id = user.id;
+        token.profilePicture = user.image || null;
       }
       return token;
     },
     async session({ session, token }) {
-      if (token && typeof token.id === "string") {
-        session.user.id = token.id; // Attach the user id to the session
+      if (token) {
+        session.user.id = token.id as string | undefined;
+        session.user.profilePicture = token.profilePicture as string | null | undefined;
       }
       return session;
     },

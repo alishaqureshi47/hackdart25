@@ -50,6 +50,14 @@ export default class SurveyRepository {
                 },
                 description: "Options for multiple-choice questions, if applicable"
               },
+              min: { 
+                type: Type.NUMBER,
+                description: "Minimum value for range questions, if applicable"
+              },
+              max: { 
+                type: Type.NUMBER,
+                description: "Maximum value for range questions, if applicable"
+              },
             },
             required: ["questionText", "questionType"],
           },

@@ -22,3 +22,127 @@ html, body {
   /* optional—keep the pattern fixed behind content: */
   background-attachment: fixed;
 }
+
+
+
+/*animation styles*/
+@-webkit-keyframes textAnimate {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: none;
+  }
+}
+@keyframes textAnimate {
+  0% {
+    transform: translateY(100%);
+  }
+  100% {
+    transform: none;
+  }
+}
+@-webkit-keyframes fadeAnimate {
+  0% {
+    transform: translateY(4rem);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+@keyframes fadeAnimate {
+  0% {
+    transform: translateY(4rem);
+    opacity: 0;
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+.text-animate {
+  transform: translateY(120%);
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+.text-animate.animate-active {
+  -webkit-animation-name: textAnimate;
+          animation-name: textAnimate;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+}
+.fade-animate {
+  transform: translateY(4rem);
+  opacity: 0;
+  -webkit-animation-fill-mode: forwards;
+          animation-fill-mode: forwards;
+}
+.fade-animate.animate-active {
+  -webkit-animation-name: fadeAnimate;
+          animation-name: fadeAnimate;
+  -webkit-animation-duration: 1s;
+          animation-duration: 1s;
+}
+
+div:has(> .text-animate) {
+  overflow: hidden;
+}
+
+/*the preloader*/
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100dvh;
+  transition: opacity 0.3s;
+  background-color: #f0f0f0;
+}
+.preloader.loaded {
+  opacity: 1;
+}
+  
+/* HTML: <div class="loader"></div> */
+.loader {
+  width: 50px;
+  aspect-ratio: 1;
+  display:grid;
+  -webkit-mask: conic-gradient(from 15deg,#0000,#000);
+  animation: l26 1s infinite steps(12);
+}
+.loader,
+.loader:before,
+.loader:after{
+  background:
+    radial-gradient(closest-side at 50% 12.5%,
+     #f03355 96%,#0000) 50% 0/20% 80% repeat-y,
+    radial-gradient(closest-side at 12.5% 50%,
+     #f03355 96%,#0000) 0 50%/80% 20% repeat-x;
+}
+.loader:before,
+.loader:after {
+  content: "";
+  grid-area: 1/1;
+  transform: rotate(30deg);
+}
+.loader:after {
+  transform: rotate(60deg);
+}
+
+@keyframes l26 {
+  100% {transform:rotate(1turn)}
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 

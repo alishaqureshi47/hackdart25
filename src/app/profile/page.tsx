@@ -92,7 +92,7 @@ const ProfilePage: React.FC = () => {
 
       <div className="your-surveys-section">
         {/* Filter and Sort */}
-        <div className="filter-sort-bar">
+        {/* <div className="filter-sort-bar">
           <div className="filter-section">
             <label htmlFor="filter">Filter by:</label>
             <select id="filter" className="filter-select">
@@ -111,7 +111,7 @@ const ProfilePage: React.FC = () => {
               <option value="shortest">Length (Shortest to Longest)</option>
             </select>
           </div>
-        </div>
+        </div> */}
 
         {/* Survey Cards */}
         { surveys.length > 0 ? (

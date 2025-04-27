@@ -1,8 +1,8 @@
 import { db } from '@/firebase/firebase';
-import { collection, addDoc, getDocs } from 'firebase/firestore';
+import { collection, addDoc, getDocs, query, where, updateDoc, doc, arrayUnion } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { CreateSurveyInput } from '../types/surveyAppTypes';
-import { FirebaseSurvey } from '../types/surveyFirebaseTypes';
+import { FirebaseSurvey, SurveyAnswer } from '../types/surveyFirebaseTypes';
 import { geminiGenerate } from '@/features/gemini/utils/geminiGenerate';
 import { Type } from '@google/genai';
 
@@ -147,5 +147,35 @@ export default class SurveyRepository {
     return snapshot.docs.map((doc: any) => ({
       ...doc.data(),
     })) as FirebaseSurvey[];
+  }
+
+  /**
+   * Fetches the surveys of a specific user
+   * @param userId - The ID of the user
+   * @returns A promise resolving to an array of surveys
+   */
+  public async fetchSurveysByUser(userId: string): Promise<FirebaseSurvey[]> {
+    const surveysCollection = collection(db, "surveys");
+    const userSurveysQuery = query(surveysCollection, where("userId", "==", userId));
+    const snapshot = await getDocs(userSurveysQuery);
+
+    return snapshot.docs.map((doc: any) => ({
+      id: doc.id, // Include the document ID if needed
+      ...doc.data(),
+    })) as FirebaseSurvey[];
+  }
+
+  /**
+   * Submits a response to a survey
+   * @param surveyId - The ID of the survey
+   * @param response - The response to add (SurveyAnswer object)
+   * @returns A promise that resolves when the response is added
+   */
+  public async submitSurveyResponse(surveyId: string, response: SurveyAnswer): Promise<void> {
+    const surveyDocRef = doc(db, "surveys", surveyId);
+
+    await updateDoc(surveyDocRef, {
+      responses: arrayUnion(response), // Add the response to the responses array
+    });
   }
 }

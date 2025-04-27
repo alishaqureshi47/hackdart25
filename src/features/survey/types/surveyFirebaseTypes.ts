@@ -5,6 +5,7 @@ export interface FirebaseSurvey {
   createdAt: Date;
   questions: SurveyQuestion[];
   imageUrl: string;
+  responses: SurveyAnswer[]; // Array of answers for all questions
 }
 
 export type SurveyQuestion =
@@ -16,20 +17,17 @@ export interface MultipleChoiceQuestion {
   questionText: string;
   questionType: "multiple-choice";
   options: string[]; // Required for multiple-choice questions
-  responses: RangeAnswer[]; // Array of answers for this question type
 }
 
 export interface TextQuestion {
   questionText: string;
   questionType: "text";
-  responses: RangeAnswer[]; // Array of answers for this question type
 }
 
 export interface RangeQuestion {
   questionText: string;
   questionType: "range";
   rangeSize: number; // how big the range is
-  responses: RangeAnswer[]; // Array of answers for this question type
 }
 
 export type SurveyAnswer =
@@ -40,12 +38,16 @@ export type SurveyAnswer =
 export interface MultipleChoiceAnswer {
   selectedOption: string; // The selected option for the multiple-choice question
   selectedOptionIndex: number; // The index of the selected option
+  questionType: "multiple-choice"; // The type of the question
 }
 
 export interface TextAnswer {
   answerText: string; // The text response for the text question
+  questionType: "text"; // The type of the question
 }
 
 export interface RangeAnswer {
   selectedValue: number; // The selected value within the range
+  selectedValueIndex: number; // The index of the selected value
+  questionType: "range";
 }

@@ -34,7 +34,7 @@ const DashboardPage: React.FC = () => {
   }, []);
 
   if (status === "unauthenticated") {
-    redirect("/login");
+    redirect("/");
   }
 
   return (

@@ -14,9 +14,12 @@
 
 /* page title */
 .title {
-  font-size: 2rem;
-  margin-bottom: 1.5rem;
-  color: #333;
+  /* same size, weight & color as your .field labels */
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 1rem;
+  text-align: left;    /* match label alignment */
 }
 
 /* form wrapper */
@@ -52,20 +55,30 @@
   margin-bottom: 1rem;
   width: 100%;
 }
-
-.categoryButtons button {
-  flex: 0 1 auto;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  line-height: 1;
+/* CATEGORY DROPDOWN STYLES */
+.categorySelect {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #333;
   background: #fff;
   border: 1px solid #bbb;
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
+  appearance: none;         /* remove native arrow */
+  background-image: url("data:image/svg+xml;charset=US-ASCII,\
+    %3Csvg%20width%3D'10'%20height%3D'7'%20viewBox%3D'0%200%2010%207'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E\
+    %3Cpath%20d%3D'M0%200l5%207%205-7'%20fill%3D'%23666'%20/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 10px 7px;
   cursor: pointer;
-  transition: background 0.2s;
 }
-.categoryButtons button:hover {
-  background: #f0f0f0;
+
+.categorySelect:focus {
+  outline: none;
+  border-color: #e67a7a;
+  box-shadow: 0 0 0 2px rgba(230,123,122,0.3);
 }
 
 /* live preview box */

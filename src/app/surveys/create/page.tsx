@@ -1,11 +1,9 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react";
-import { useUser } from "@/contexts/UserContext";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { createSurvey } from "@/features/survey/services/createSurvey";
-import styles from "./page.module.css";
+import { useState, useRef, useEffect } from "react"
+import { useSession } from "next-auth/react"
+import { redirect } from "next/navigation"
+import styles from "./page.module.css"
 
 const CATEGORY_IMAGES = [
   { label: "Business & Entrepreneurship",    img: "/business.png" },
@@ -17,89 +15,57 @@ const CATEGORY_IMAGES = [
 ]
 
 export default function SurveyPage() {
-  const { data: session, status } = useSession();
-  const { userId } = useUser();
-  if (status === "unauthenticated") {
-    redirect("/login")
-  }
+  const { data: session, status } = useSession()
+  if (status === "unauthenticated") redirect("/login")
 
-  const [topic, setTopic] = useState("");
-  const [objective, setObjective] = useState("");
-  const [isCreatingSurvey, setIsCreatingSurvey] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [previewUrl, setPreviewUrl] = useState<string>("")
-  
-  // 1) Start with an empty array (no fields shown)
+  const [category, setCategory] = useState<string>("")
+  const [topic, setTopic] = useState("")
+  const [objective, setObjective] = useState("")
   const [questions, setQuestions] = useState<string[]>([])
 
-  // Clean up any blob URL on unmount
+  // cleanup blob URLs
   useEffect(() => {
     return () => {
-      if (previewUrl.startsWith("blob:")) {
-        URL.revokeObjectURL(previewUrl)
-      }
+      if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl)
     }
   }, [previewUrl])
 
-  // When user picks a file
+  // manual file upload
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
     if (file) {
-      // free old blob
       if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl)
       const url = URL.createObjectURL(file)
       setPreviewUrl(url)
+      setCategory("")   // clear dropdown
     }
   }
 
-  // When user clicks a category
+  // preset attach
   function attachPreset(imgPath: string) {
-    // clear file input so new uploads can fire change events
     if (fileInputRef.current) fileInputRef.current.value = ""
-    // revoke old blob if any
     if (previewUrl.startsWith("blob:")) URL.revokeObjectURL(previewUrl)
-    // set to static public image
     setPreviewUrl(imgPath)
   }
 
-  // question handlers
+  // dynamic questions
   const addQuestion    = () => setQuestions((q) => [...q, ""])
-  const removeQuestion = (i: number) => setQuestions((q) => q.filter((_, idx) => idx !== i))
-  const updateQuestion = (i: number, v: string) => setQuestions((q) => q.map((x, idx) => idx === i ? v : x))
+  const removeQuestion = (i: number) => setQuestions((q) => q.filter((_,idx) => idx!==idx))
+  const updateQuestion = (i: number, v: string) => setQuestions((q) => q.map((x,idx)=> idx===i?v:x))
 
-  const handleSubmit = (e: React.FormEvent) => {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    console.log({ topic, objective, questions })
-    // call API
-    if (!userId) {
-      console.error("User ID is not available");
-      return;
-    }
-    setIsCreatingSurvey(true);
-    createSurvey(userId, topic, objective, questions) // pass author and info
-      .then(() => {
-        // Handle success (e.g., show a success message or redirect)
-        console.log("Survey created successfully");
-      })
-      .catch((error) => {
-        // Handle error (e.g., show an error message)
-        console.error("Error creating survey:", error);
-      })
-      .finally(() => {
-        // Reset the form or redirect after survey creation
-        setIsCreatingSurvey(false);
-        setTopic("");
-        setObjective("");
-        setQuestions([]);
-        alert("Survey created successfully");
-      });
+    console.log({ topic, objective, questions, headerImage: previewUrl, category })
+    alert("Submitted! See console for payload.")
   }
 
   return (
     <main className={styles.container}>
       <h1 className={styles.title}>Create a survey</h1>
-
       <form className={styles.form} onSubmit={handleSubmit}>
+
         {/* UPLOAD FIELD */}
         <div className={styles.uploadField}>
           <label htmlFor="header">Header Image (optional)</label>
@@ -112,28 +78,36 @@ export default function SurveyPage() {
           />
         </div>
 
-        {/* PRESET BUTTONS */}
-        <div className={styles.categoryButtons}>
-          {CATEGORY_IMAGES.map(({ label, img }) => (
-            <button
-              type="button"
-              key={label}
-              onClick={() => attachPreset(img)}
-            >
-              {label}
-            </button>
-          ))}
+        {/* CATEGORY DROPDOWN */}
+        <div className={styles.field}>
+          <label htmlFor="category">Default Headers (optional)</label>
+          <select
+            id="category"
+            className={styles.categorySelect}
+            value={category}
+            onChange={(e) => {
+              const img = e.target.value
+              setCategory(img)
+              if (img) attachPreset(img)
+            }}
+          >
+            <option value="">— Pick a category —</option>
+            {CATEGORY_IMAGES.map(({ label, img }) => (
+              <option key={label} value={img}>
+                {label}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* LIVE PREVIEW */}
         {previewUrl && (
           <div className={styles.headerPreview}>
-            {/* <img> works for both blob: and /public URLs */}
             <img src={previewUrl} alt="Preview" className={styles.headerImg} />
           </div>
         )}
 
-        {/* TOPIC & OBJECTIVE */}
+        {/* TOPIC */}
         <div className={styles.field}>
           <label htmlFor="topic">Topic</label>
           <input
@@ -146,6 +120,7 @@ export default function SurveyPage() {
           />
         </div>
 
+        {/* OBJECTIVE */}
         <div className={styles.field}>
           <label htmlFor="objective">Objective</label>
           <input
@@ -173,7 +148,6 @@ export default function SurveyPage() {
                 type="button"
                 className={styles.removeBtn}
                 onClick={() => removeQuestion(idx)}
-                aria-label="Remove question"
               >
                 ✕
               </button>

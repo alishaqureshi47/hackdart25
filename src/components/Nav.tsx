@@ -4,9 +4,8 @@ import Link from "next/link"
 import styles from "./Nav.module.css"
 
 const NAV_ITEMS = [
-  { href: "/", label: "Home" },
+  { href: "/dashboard", label: "Home" },
   { href: "/about", label: "About" },
-  { href: "/dashboard", label: "Dashboard" },
 ]
 
 export default function Nav() {

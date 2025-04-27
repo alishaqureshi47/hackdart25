@@ -10,10 +10,14 @@
     position: relative;
   }
   
-  .your-survey-card-dots {
+  /* Dots button */
+  .your-survey-card-dots-wrapper {
     position: absolute;
     top: 10px;
     right: 10px;
+  }
+  
+  .your-survey-card-dots {
     background: white;
     border-radius: 50%;
     width: 30px;
@@ -23,14 +27,59 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 0px 2px 6px rgba(0,0,0,0.15);
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
     cursor: pointer;
+  }
+  
+  /* Dropdown hidden by default */
+  .your-survey-card-dropdown {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #eee;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    min-width: 140px;
+    z-index: 100;
+    display: none; /* hidden initially */
+    flex-direction: column;
+    padding: 0;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.2s ease; /* ✨ FADE IN + SLIDE */
+  }
+  
+  /* Show dropdown on hover */
+  .your-survey-card-dots-wrapper:hover .your-survey-card-dropdown {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Dropdown button styles */
+  .your-survey-card-dropdown button {
+    all: unset;
+    width: 100%;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    color: #333;
+    cursor: pointer;
+  }
+  
+  .your-survey-card-dropdown button:hover {
+    background: #f7f9fc;
+    color: #F27188;
+    font-weight: bold;
   }
   
   /* Buttons under card */
   .your-survey-card-buttons {
     display: flex;
     gap: 0.5rem;
+    margin-top: 0.5rem;
   }
   
   .edit-button, .view-responses-button {
@@ -55,31 +104,5 @@
     background-color: #e7f5eb;
     border-color: #52A46E;
     color: #52A46E;
-  }
-  
-  .your-survey-card-dropdown {
-    position: absolute;
-    top: 30px;
-    right: 0;
-    background: white;
-    border: 1px solid #ddd;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    display: flex;
-    flex-direction: column;
-    z-index: 100;
-  }
-  
-  .your-survey-card-dropdown button {
-    padding: 0.5rem 1rem;
-    background: white;
-    border: none;
-    text-align: left;
-    cursor: pointer;
-    font-size: 0.9rem;
-  }
-  
-  .your-survey-card-dropdown button:hover {
-    background-color: #f7f9fc;
   }
   

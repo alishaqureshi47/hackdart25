@@ -37,30 +37,16 @@ const YourSurveyCard: React.FC<YourSurveyCardProps> = ({
         <SurveyCard {...props} onClick={onClick} />
 
         {/* Dots Button */}
-        <div className="your-survey-card-dots" onClick={() => setMenuOpen(!menuOpen)}>
-          ⋮
+        <div className="your-survey-card-dots-wrapper">
+        <div className="your-survey-card-dots">
+            ⋮
+        </div>
+        <div ref={menuRef} className="your-survey-card-dropdown">
+            <button>Copy Link</button>
+            <button>Delete Survey</button>
+        </div>
         </div>
 
-        {/* Dropdown menu (optional extra actions) */}
-        {menuOpen && (
-            <div ref={menuRef} className="your-survey-card-dropdown">
-                <button onClick={() => {
-                navigator.clipboard.writeText("this is da link!");
-                alert("Link copied to clipboard!");
-                }}>
-                Copy Link
-                </button>
-
-                <button onClick={() => {
-                if (confirm("Are you sure you want to delete this survey?")) {
-                    console.log("Delete survey logic here!");
-                    // 🚨 You can call a real delete function here later
-                }
-                }}>
-                Delete Survey
-                </button>
-            </div>
-            )}
       </div>
 
       {/* 🛠 Always visible Edit and View buttons */}

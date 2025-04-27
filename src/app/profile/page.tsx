@@ -89,13 +89,6 @@ const [loading, setLoading] = useState(true);
 
         {/* Survey Cards */}
         <div className="cards-grid">
-          <div className="survey-card">Survey Placeholder</div>
-          <div className="survey-card">Survey Placeholder</div>
-          <div className="survey-card">Survey Placeholder</div>
-        </div>
-      </div>
-
-      <div className="cards-grid">
           {loading ? (
             <p>Loading surveys...</p>
           ) : (
@@ -115,6 +108,9 @@ const [loading, setLoading] = useState(true);
             ))
           )}
         </div>
+      </div>
+
+      
 
       {/* Delete Profile Button */}
       <div className="delete-profile-container">

@@ -32,34 +32,23 @@
   flex: 1; /* Expand to take available space */
 }
 
-.settings-button {
+.profile-button {
   font-weight: bold;
   width: 100%;
-  text-align: left;
-  display: flex; /* 🔥 Make it flex */
-  align-items: center;
-  justify-content: space-between; /* 🔥 Push text left, arrow right */
+  text-align: center;
   background-color: #f7f9fc;
   border: 2px solid transparent;
   padding: 0.75rem 1rem;
   border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.settings-button:hover {
+.profile-button:hover {
   background-color: #e7f5eb; /* Light green background */
-  border: 2px solid #52A46E; /* Your green color */
+  border: 2px solid #52A46E;
   color: #52A46E;
-}
-
-.settings-text {
-  flex: 1;
-  text-align: left;
-}
-
-.settings-arrow {
-  margin-left: auto;
-  font-size: 1.2rem;
 }
 
 
@@ -113,18 +102,16 @@
   border-color: #F27188;
   color: #F27188;
 }
-
-
 /* Domain Toggle Section */
 .domain-toggle {
-  font-size: 0.9rem;
-  margin-top: 2rem;
   width: 100%;
-  background-color: #f7f9fc;
+  margin-top: 2rem;
   padding: 1rem;
-  border-radius: 8px;
+  background-color: #f7f9fc;
   border: 1px solid #e0e0e0;
+  border-radius: 8px;
   box-sizing: border-box;
+  font-size: 0.9rem;
 }
 
 .domain-toggle p {
@@ -140,12 +127,38 @@
   cursor: pointer;
 }
 
+/* Checkbox Styles */
 .domain-toggle input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
   margin-right: 0.5rem;
-  width: 16px;
-  height: 16px;
+  background-color: #fff;
+  border: 2px solid #aaa;
+  border-radius: 4px;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
 }
 
+/* When checked */
+.domain-toggle input[type="checkbox"]:checked {
+  background-color: #F7C143;
+  border-color: #F7C143;
+}
+
+/* Native checkmark */
+.domain-toggle input[type="checkbox"]:checked::after {
+  content: "✔";
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
 /* Main Content */
 .main-content {

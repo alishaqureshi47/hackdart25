@@ -27,7 +27,7 @@ const DashboardPage: React.FC = () => {
                     <div className="domain-toggle">
                         <p>Show:</p>
                         <label>
-                            <input type="checkbox" name="domain-own" />
+                            <input type="checkbox" name="domain-own" defaultChecked />
                             Your Domain
                         </label>
                         <label>
@@ -37,31 +37,16 @@ const DashboardPage: React.FC = () => {
                     </div>
 
                     <div className="settings-dropdown">
-                    <button 
-                      className="sidebar-button settings-button"
-                      onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-                    >
-                      <span className="settings-text">Settings</span>
-                      <span className="settings-arrow">{isSettingsOpen ? "▲" : "▼"}</span>
-                    </button>
-
-
-                        {isSettingsOpen && (
-                            <div className="settings-menu">
-                                <button className="sidebar-button small">Profile Details</button>
-                                <button className="sidebar-button small" onClick={() => {
-                                  if (session?.user?.email) {
-                                    deleteUser(session.user.email);
-                                  } else {
-                                    console.error("Email is not available");
-                                  }
-                                }}>
-                                  Delete Profile
-                                </button>
-                                <button className="sidebar-button small" onClick={() => signOut({ callbackUrl: "/login" })}>Logout</button>
-                            </div>
-                        )}
+                      <button 
+                        className="sidebar-button profile-button"
+                        onClick={() => {
+                          router.push("/profile");
+                        }}
+                      >
+                        Profile
+                      </button>
                     </div>
+
                 </nav>
             </aside>
 

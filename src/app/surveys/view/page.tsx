@@ -99,7 +99,6 @@ export default function SurveyPage() {
                 {q.options.map((opt, i) => (
                   <label key={opt} className={styles.option}>
                     <input
-                      required
                       type="radio"
                       name={`q${index}-${i}`}
                       value={opt}

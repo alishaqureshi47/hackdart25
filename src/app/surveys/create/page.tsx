@@ -28,7 +28,8 @@ export default function SurveyPage() {
   const [previewUrl, setPreviewUrl] = useState<string>("")
   const [category, setCategory] = useState<string>("")
   const [topic, setTopic] = useState("")
-  const [objective, setObjective] = useState("")
+  const [objective, setObjective] = useState("");
+  const [isModerated, setIsModerated] = useState(false);
   const [questions, setQuestions] = useState<string[]>([])
   const [errors, setErrors] = useState<{ topic?: string; objective?: string }>({});
 
@@ -66,42 +67,49 @@ export default function SurveyPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-
+  
     // Validate inputs
-    // Reset errors
     const newErrors: { topic?: string; objective?: string } = {};
-
-    // Validate inputs
+  
     if (!topic.trim()) {
       newErrors.topic = "Topic is required.";
     }
     if (!objective.trim()) {
       newErrors.objective = "Objective is required.";
     }
-
+  
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-
+  
     try {
-      await createSurvey(
+      // Create the survey
+      const result = await createSurvey(
         userId || "",
         topic, 
         objective,
+        isModerated,
         questions,
-        selectedFile, // Pass the file if uploaded
-        previewUrl // Pass the image path if selected
+        selectedFile,
+        previewUrl
       );
+      
+      // Show success message
       alert("Survey created successfully!");
-      // redirect
-      router.replace("/dashboard");
+      
+      // Use setTimeout to ensure the alert is seen before navigation
+      // and to prevent race conditions
+      setTimeout(() => {
+        router.replace("/dashboard");
+      }, 100);
+      
     } catch (error) {
+      // This will only run if createSurvey throws an error
       console.error("Failed to create survey:", error);
       alert("Failed to create survey.");
     }
   }
-
   return (
     <main className={styles.container}>
       <h1 className={styles.title}>Create a survey</h1>
@@ -199,6 +207,25 @@ export default function SurveyPage() {
           >
             + Add Question
           </button>
+        </div>
+
+        {/* MODERATION CHECKBOX */}
+        <div className={styles.field}>
+          <div className={styles.checkboxField}>
+            <input
+              type="checkbox"
+              id="isModerated"
+              checked={isModerated}
+              onChange={(e) => setIsModerated(e.target.checked)}
+              className={styles.checkbox}
+            />
+            <label htmlFor="isModerated" className={styles.checkboxLabel}>
+              Require content moderation
+            </label>
+          </div>
+          <p className={styles.fieldDescription}>
+            When enabled, inappropriate content will be filtered out from responses
+          </p>
         </div>
 
         {/* SUBMIT */}

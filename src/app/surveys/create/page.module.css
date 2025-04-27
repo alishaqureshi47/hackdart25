@@ -201,3 +201,28 @@
   border-color: #e67a7a;
   box-shadow: 0 0 0 2px rgba(230,123,122,0.3);
 }
+
+.checkboxField {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.checkbox {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.checkboxLabel {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.fieldDescription {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+  padding-left: 28px;
+}

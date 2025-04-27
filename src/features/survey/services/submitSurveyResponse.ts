@@ -23,7 +23,8 @@ export async function submitSurveyResponse(
   const surveyRepo = new SurveyRepository();
 
   try {
-    if (true) {
+    const survey = await surveyRepo.fetchSurveyById(surveyId);
+    if (survey?.isModerated) {
       // Moderate the survey responses
       const moderationResult = await moderateSurveyResponse(responses);
 

@@ -63,6 +63,7 @@ export default class SurveyRepository {
   async createSurvey(
     surveyData: CreateSurveyInput,
     authorId: string,
+    isModerated: boolean = false,
     imageFile?: File | null,
     imagePath?: string
   ): Promise<void> {
@@ -107,6 +108,7 @@ export default class SurveyRepository {
     firebaseSurvey.createdAt = new Date();
     firebaseSurvey.imageUrl = imageUrl; // Attach the image URL
     firebaseSurvey.authorId = authorId; // Attach the author ID
+    firebaseSurvey.isModerated = isModerated; // Attach the moderation status
 
     // Store the survey in Firebase
     const surveyDoc = {
@@ -166,6 +168,7 @@ export default class SurveyRepository {
       const survey: FirebaseSurvey = {
         id: surveyId, // Use the document ID
         authorId: surveyData.authorId,
+        isModerated: surveyData.isModerated,
         title: surveyData.title,
         description: surveyData.description,
         createdAt: surveyData.createdAt,

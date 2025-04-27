@@ -1,6 +1,7 @@
 export interface FirebaseSurvey {
   id: string; // Document ID
   authorId: string;
+  isModerated: boolean;
   // domain: string; //TODO
   title: string;
   description: string;

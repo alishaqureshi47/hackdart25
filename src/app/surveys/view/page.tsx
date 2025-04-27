@@ -1,17 +1,17 @@
 "use client"
-
 import { useState } from "react"
 import styles from "./page.module.css"
 
 type Question =
-  | { id: number; type: "text" | "email"; label: string; placeholder?: string }
-  | { id: number; type: "textarea"; label: string; placeholder?: string }
-  | { id: number; type: "radio"; label: string; options: string[] }
-  | { id: number; type: "checkbox"; label: string; options: string[] }
+  | { id: number; type: "text" | "email";          label: string; placeholder?: string }
+  | { id: number; type: "textarea";                 label: string; placeholder?: string }
+  | { id: number; type: "radio";      label: string; options: string[] }
+  | { id: number; type: "checkbox";   label: string; options: string[] }
+  | { id: number; type: "range";      label: string; min: number; max: number; step?: number }
 
 const QUESTIONS: Question[] = [
-  { id: 1, type: "text", label: "What is your name?", placeholder: "Your name" },
-  { id: 2, type: "email", label: "What is your email?", placeholder: "name@example.com" },
+  { id: 1, type: "text",     label: "What is your name?",                                    placeholder: "Your name" },
+  { id: 2, type: "email",    label: "What is your email?",                                   placeholder: "name@example.com" },
   {
     id: 3,
     type: "radio",
@@ -24,7 +24,9 @@ const QUESTIONS: Question[] = [
     label: "Which features do you use?",
     options: ["Feature A", "Feature B", "Feature C", "Feature D"],
   },
-  { id: 5, type: "textarea", label: "Any additional comments?", placeholder: "Your feedback…" },
+  { id: 5, type: "textarea", label: "Any additional comments?",                              placeholder: "Your feedback…" },
+  // New range question
+  { id: 6, type: "range",    label: "On a scale of 0–10, how likely are you to recommend us?", min: 0, max: 10, step: 1 },
 ]
 
 export default function SurveyPage() {
@@ -37,7 +39,6 @@ export default function SurveyPage() {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     console.log("Survey answers:", answers)
-    // TODO: send `answers` to your API
     alert("Thanks for submitting!")
   }
 
@@ -49,6 +50,7 @@ export default function SurveyPage() {
           <div key={q.id} className={styles.questionCard}>
             <label className={styles.questionLabel}>{q.label}</label>
 
+            {/* text/email */}
             {(q.type === "text" || q.type === "email") && (
               <input
                 className={styles.input}
@@ -59,6 +61,7 @@ export default function SurveyPage() {
               />
             )}
 
+            {/* textarea */}
             {q.type === "textarea" && (
               <textarea
                 className={styles.textarea}
@@ -68,6 +71,7 @@ export default function SurveyPage() {
               />
             )}
 
+            {/* radio */}
             {q.type === "radio" && (
               <div className={styles.options}>
                 {q.options.map((opt) => (
@@ -85,6 +89,7 @@ export default function SurveyPage() {
               </div>
             )}
 
+            {/* checkbox */}
             {q.type === "checkbox" && (
               <div className={styles.options}>
                 {q.options.map((opt) => {
@@ -96,16 +101,32 @@ export default function SurveyPage() {
                         value={opt}
                         checked={selected.includes(opt)}
                         onChange={(e) => {
-                          const nxt = e.target.checked
+                          const next = e.target.checked
                             ? [...selected, opt]
                             : selected.filter((x) => x !== opt)
-                          handleChange(q.id, nxt)
+                          handleChange(q.id, next)
                         }}
                       />
                       <span>{opt}</span>
                     </label>
                   )
                 })}
+              </div>
+            )}
+
+            {/* range slider */}
+            {q.type === "range" && (
+              <div className={styles.rangeWrapper}>
+                <input
+                  className={styles.rangeInput}
+                  type="range"
+                  min={q.min}
+                  max={q.max}
+                  step={q.step || 1}
+                  value={answers[q.id] ?? q.min}
+                  onChange={(e) => handleChange(q.id, Number(e.target.value))}
+                />
+                <span className={styles.rangeValue}>{answers[q.id] ?? q.min}</span>
               </div>
             )}
           </div>

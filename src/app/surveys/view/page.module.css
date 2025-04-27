@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;700&display=swap");
 
-/* Container & font */
+/* container & font */
 .container {
   font-family: "Instrument Sans", sans-serif;
   width: 100%;
@@ -17,16 +17,16 @@
   margin-bottom: 1.5rem;
 }
 
-/* Form layout */
+/* form */
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* Question card */
+/* question card */
 .questionCard {
-  background: #eef5f4; /* soft pale-green */
+  background: #eef5f4;
   border-radius: 0.75rem;
   padding: 1rem;
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
@@ -38,7 +38,7 @@
   color: #222;
 }
 
-/* Text inputs */
+/* text inputs & textarea */
 .input,
 .textarea {
   width: 100%;
@@ -54,7 +54,7 @@
   resize: vertical;
 }
 
-/* Options (radio & checkbox) */
+/* radio & checkbox */
 .options {
   display: flex;
   flex-direction: column;
@@ -66,14 +66,33 @@
   gap: 0.5rem;
 }
 .option input {
-  accent-color: #e67a7a; /* coral accent */
+  accent-color: #e67a7a;
 }
 .option span {
   font-size: 1rem;
   color: #333;
 }
 
-/* Submit button */
+/* new range styles */
+.rangeWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.rangeInput {
+  flex: 1;
+  /* remove default outline on focus */
+  outline: none;
+  /* optional: accent the track in coral */
+  accent-color: #e67a7a;
+}
+.rangeValue {
+  width: 2rem;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* submit */
 .submitButton {
   align-self: center;
   background: #e67a7a;

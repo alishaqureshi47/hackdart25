@@ -13,7 +13,7 @@ export default function Nav() {
   return (
     <header className={styles.navbar}>
       <Link href="/" className={styles.brand}>
-        <Image src="/logo.png" alt="Logo" width={32} height={32} />
+        <img src="/logo.png" alt="Logo" width={30} />
         <span className={styles.brandName}>Quipp</span>
       </Link>
 

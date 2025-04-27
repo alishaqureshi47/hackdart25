@@ -5,7 +5,7 @@ import { useRouter, redirect, useSearchParams } from "next/navigation";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "@/firebase/firebase";
-import { useUser } from "@/contexts/UserContext";
+import { getUserId } from "@/features/auth/getUser";
 import FileInput from "@/shared/components/forms/FileInput";
 import styles from "./page.module.css";
 import {
@@ -45,7 +45,29 @@ export default function EditSurveyPage() {
 
 function EditSurveyContent() {
   const router = useRouter();
-  const { userId } = useUser();
+  const { data: session, status } = useSession();
+  if (status === "unauthenticated") redirect("/login");
+
+  // Replace context with state variable
+  const [userId, setUserId] = useState<string | null>(null);
+  // Rest of your state variables remain the same
+  
+  // Fetch user ID when session is available
+  useEffect(() => {
+    const fetchUserId = async () => {
+      if (session?.user?.email) {
+        try {
+          const id = await getUserId(session.user.email);
+          setUserId(id);
+        } catch (error) {
+          console.error("Failed to fetch user ID:", error);
+          // Handle error - redirect to login or show message
+        }
+      }
+    };
+    
+    fetchUserId();
+  }, [session]);
   
   // Form state
   const fileInputRef = useRef<HTMLInputElement>(null);

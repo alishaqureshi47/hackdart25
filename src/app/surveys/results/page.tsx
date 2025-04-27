@@ -4,7 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
-import { useUser } from '@/contexts/UserContext';
+import { getUserId } from '@/features/auth/getUser';
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 import { fetchSurveyById } from '@/features/survey/services/fetchSurveyById';
 import SurveyAnswersDisplay from '@/shared/components/surveys/SurveyAnswersDisplay';
@@ -26,9 +26,30 @@ export default function SurveyAnswersPage() {
 }
 
 function SurveyAnswersContent() {
+  const router = useRouter();
   const { data: session, status } = useSession();
-  const router = useRouter(); // Add router
-  const { userId } = useUser();
+  if (status === "unauthenticated") redirect("/login");
+
+  // Replace context with state variable
+  const [userId, setUserId] = useState<string | null>(null);
+  // Rest of your state variables remain the same
+  
+  // Fetch user ID when session is available
+  useEffect(() => {
+    const fetchUserId = async () => {
+      if (session?.user?.email) {
+        try {
+          const id = await getUserId(session.user.email);
+          setUserId(id);
+        } catch (error) {
+          console.error("Failed to fetch user ID:", error);
+          // Handle error - redirect to login or show message
+        }
+      }
+    };
+    
+    fetchUserId();
+  }, [session]);
   const params = useSearchParams();
   const surveyId = params.get("id") as string;
   

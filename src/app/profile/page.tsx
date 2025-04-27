@@ -10,17 +10,36 @@ import { fetchAllSurveysForUser } from '@/features/survey/services/fetchAllSurve
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 import SurveyAnswersPage from '@/shared/components/surveys/SurveyAnswersDisplay';
 import { useRouter } from 'next/navigation';
-import { useUser } from '@/contexts/UserContext';
+import { getUserId } from '@/features/auth/getUser';
 
 
 
 const ProfilePage: React.FC = () => {
-  const { data: session, status } = useSession();
-  if (status === "unauthenticated") {
-    redirect("/login");
-  }
   const router = useRouter();
-  const { userId } = useUser();
+  const { data: session, status } = useSession();
+  if (status === "unauthenticated") redirect("/login");
+
+  // Replace context with state variable
+  const [userId, setUserId] = useState<string | null>(null);
+  // Rest of your state variables remain the same
+  
+  // Fetch user ID when session is available
+  useEffect(() => {
+    const fetchUserId = async () => {
+      if (session?.user?.email) {
+        try {
+          const id = await getUserId(session.user.email);
+          setUserId(id);
+        } catch (error) {
+          console.error("Failed to fetch user ID:", error);
+          // Handle error - redirect to login or show message
+        }
+      }
+    };
+    
+    fetchUserId();
+  }, [session]);
+  
   const [loading, setLoading] = useState(true);
   const [surveys, setSurveys] = useState<FirebaseSurvey[]>([]);
 

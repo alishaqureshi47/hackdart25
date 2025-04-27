@@ -1,12 +1,7 @@
+"use client";
 import Nav from "../components/Nav"
-import Providers from "./providers";
-import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
-
-export const metadata: Metadata = {
-  title: "Quipp",
-  description: "A web application to conduct surveys to students!",
-};
 
 export default function RootLayout({
   children,
@@ -16,12 +11,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-          <Providers>
-            <div className="top-navbar">
-              <Nav />
-            </div>
-            {children}
-          </Providers>
+        <div className="top-navbar">
+          <Nav />
+        </div>
+        <SessionProvider>
+          {children}
+        </SessionProvider>
       </body>
     </html>
   );

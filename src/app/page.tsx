@@ -1,10 +1,7 @@
-"use client";
-
 import styles from "./page.module.css";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Home() {
-  const router = useRouter();
 
   return (
     <main className={styles.main}>
@@ -13,9 +10,9 @@ export default function Home() {
     <p className={styles.lead}>
       Easily design your survey in a matter of minutes. Access your audience on all platforms. <br></br>Observe results visually and in real-time.
     </p>
-    <button className={styles.primaryButton} onClick={() => router.push("/login")}>
+    <Link className={styles.primaryButton} href="/login">
       Join now
-    </button>
+    </Link>
   </section>
 
   <section className={styles.points}>

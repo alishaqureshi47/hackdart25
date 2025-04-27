@@ -7,15 +7,31 @@ interface RawPrethoughtQuestion {
 }
 
 export async function createSurvey(
+    authorId: string,
     topic: string,
     objective: string,
-    rawQuestions?: RawPrethoughtQuestion[]
+    rawQuestions?: RawPrethoughtQuestion[] | string[], // provide details or nah
 ): Promise<void> {
+    if (!authorId) {
+        throw new Error('Author ID is required');
+    }
+
     // Ensure rawQuestions is defined, default to an empty array if undefined
-    const prethoughtQuestions: PrethoughtQuestion[] = (rawQuestions || []).map((rawQuestion) => ({
-        questionText: rawQuestion.questionText,
-        questionDetails: rawQuestion.questionDetails || '', // Default to an empty string if not provided
-    }));
+    const prethoughtQuestions: PrethoughtQuestion[] = (rawQuestions || []).map((rawQuestion) => {
+        if (typeof rawQuestion === 'string') {
+            // If rawQuestion is a string, use it as the questionText and leave questionDetails empty
+            return {
+                questionText: rawQuestion,
+                questionDetails: '',
+            };
+        } else {
+            // If rawQuestion is a RawPrethoughtQuestion, map it directly
+            return {
+                questionText: rawQuestion.questionText,
+                questionDetails: rawQuestion.questionDetails || '', // Default to an empty string if not provided
+            };
+        }
+    });
 
     // Assemble the parameters into the appropriate object type
     const surveyData: CreateSurveyInput = {
@@ -26,5 +42,5 @@ export async function createSurvey(
 
     // Create an instance of SurveyRepository and call the createSurvey method
     const surveyRepo = new SurveyRepository();
-    await surveyRepo.createSurvey(surveyData);
+    await surveyRepo.createSurvey(surveyData, authorId);
 }

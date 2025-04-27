@@ -16,12 +16,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Providers>
-          <div className="top-navbar">
-            <Nav />
-          </div>
-          {children}
-        </Providers>
+          <Providers>
+            <div className="top-navbar">
+              <Nav />
+            </div>
+            {children}
+          </Providers>
       </body>
     </html>
   );

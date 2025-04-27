@@ -1,19 +1,23 @@
 // app/survey/create/page.tsx
 "use client"
 
-import { useState } from "react"
-import { useSession } from "next-auth/react"
-import { redirect } from "next/navigation"
-import styles from "./page.module.css"
+import { useState } from "react";
+import { useUser } from "@/contexts/UserContext";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { createSurvey } from "@/features/survey/services/createSurvey";
+import styles from "./page.module.css";
 
 export default function SurveyPage() {
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
+  const { userId } = useUser();
   if (status === "unauthenticated") {
     redirect("/login")
   }
 
-  const [topic, setTopic] = useState("")
-  const [objective, setObjective] = useState("")
+  const [topic, setTopic] = useState("");
+  const [objective, setObjective] = useState("");
+  const [isCreatingSurvey, setIsCreatingSurvey] = useState(false);
   
   // 1) Start with an empty array (no fields shown)
   const [questions, setQuestions] = useState<string[]>([])
@@ -27,8 +31,29 @@ export default function SurveyPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     console.log({ topic, objective, questions })
-    // TODO: call your API…
-    alert("Survey created!\n" + JSON.stringify({ topic, objective, questions }, null, 2))
+    // call API
+    if (!userId) {
+      console.error("User ID is not available");
+      return;
+    }
+    setIsCreatingSurvey(true);
+    createSurvey(userId, topic, objective, questions) // pass author and info
+      .then(() => {
+        // Handle success (e.g., show a success message or redirect)
+        console.log("Survey created successfully");
+      })
+      .catch((error) => {
+        // Handle error (e.g., show an error message)
+        console.error("Error creating survey:", error);
+      })
+      .finally(() => {
+        // Reset the form or redirect after survey creation
+        setIsCreatingSurvey(false);
+        setTopic("");
+        setObjective("");
+        setQuestions([]);
+        alert("Survey created successfully");
+      });
   }
 
   return (

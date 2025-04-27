@@ -1,6 +1,4 @@
 export interface FirebaseSurvey {
-  id: string;
-  authorId: string;
   title: string;
   description?: string; // Optional
   createdAt: Date;

@@ -3,12 +3,26 @@
 import React from 'react';
 import { useSession, signOut } from 'next-auth/react';
 import { deleteUser } from '@/features/auth/deleteUser';
+import { redirect } from "next/navigation";
 import './profile.css'; // assuming your CSS file is named profile.css
 import { useRouter } from 'next/navigation';
 
 const ProfilePage: React.FC = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
+
   const router = useRouter();
+
+  function handleDeleteProfile() {
+    if (session?.user?.email) {
+      deleteUser(session.user.email);
+      redirect("/login");
+    } else {
+      console.error("Email not available");
+    }
+  }
 
   return (
     <div className="profile-container">
@@ -66,13 +80,7 @@ const ProfilePage: React.FC = () => {
       {/* Delete Profile Button */}
       <div className="delete-profile-container">
         <button className="delete-profile-button"
-          onClick={() => {
-            if (session?.user?.email) {
-              deleteUser(session.user.email);
-            } else {
-              console.error("Email not available");
-            }
-          }}
+          onClick={handleDeleteProfile}
         >
           Delete Profile
         </button>

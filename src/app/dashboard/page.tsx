@@ -1,14 +1,20 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useSession, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import { deleteUser } from '@/features/auth/deleteUser';
+import { redirect } from "next/navigation";
 import './dashboard.css';
 import { useRouter } from 'next/navigation';
+
 const DashboardPage: React.FC = () => {
-    const router = useRouter();
-    const { data: session, status } = useSession();
-    const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const { data: session, status } = useSession();
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
+
+  const router = useRouter();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
     return (
         <div className="dashboard-container">

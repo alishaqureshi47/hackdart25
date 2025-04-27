@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import SurveyCard, { SurveyCardProps } from "@/shared/components/surveycard/surveycard";
+import { deleteSurvey } from "@/features/survey/services/deleteSurvey";
+import { useRouter } from "next/navigation";
 import "./yoursurveycard.css";
 
 interface YourSurveyCardProps extends SurveyCardProps {
@@ -16,6 +18,7 @@ const YourSurveyCard: React.FC<YourSurveyCardProps> = ({
   onClick,
   ...props
 }) => {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -31,10 +34,31 @@ const YourSurveyCard: React.FC<YourSurveyCardProps> = ({
     };
   }, []);
 
+  const handleCopyLink = () => {
+    // Copy the survey link to the clipboard
+    const surveyLink = `${window.location.origin}/surveys/view?id=${props.id}`;
+    navigator.clipboard.writeText(surveyLink).then(() => {
+      alert("Survey link copied to clipboard!");
+    });
+  }
+
+  const handleDeleteSurvey = async () => {
+    // ask for confirmation first
+    const confirmDelete = window.confirm("Are you sure you want to delete this survey?");
+    if (!confirmDelete) return;
+    // delete the survey
+    await deleteSurvey(props.id);
+
+    // success
+    alert("Survey deleted successfully");
+    // reload
+    router.refresh();
+  };
+
   return (
     <div className="your-survey-card-wrapper">
       <div className="your-survey-card-content">
-        <SurveyCard {...props} onClick={onClick} />
+        <SurveyCard {...props} />
 
         {/* Dots Button */}
         <div className="your-survey-card-dots-wrapper">
@@ -42,8 +66,8 @@ const YourSurveyCard: React.FC<YourSurveyCardProps> = ({
             ⋮
         </div>
         <div ref={menuRef} className="your-survey-card-dropdown">
-            <button>Copy Link</button>
-            <button>Delete Survey</button>
+            <button onClick={handleCopyLink}>Copy Link</button>
+            <button onClick={handleDeleteSurvey}>Delete Survey</button>
         </div>
         </div>
 

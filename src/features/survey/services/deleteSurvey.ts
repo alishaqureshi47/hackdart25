@@ -5,7 +5,7 @@ import SurveyRepository from "../repositories/survey.repository";
 const surveyRepository = new SurveyRepository();
 
 // Function to delete a survey with safety checks
-export async function removeSurvey(surveyId: string): Promise<void> {
+export async function deleteSurvey(surveyId: string): Promise<void> {
   // Safety checks for surveyId
   if (!surveyId || typeof surveyId !== 'string' || surveyId.trim() === '') {
     throw new Error('Invalid survey ID provided.');

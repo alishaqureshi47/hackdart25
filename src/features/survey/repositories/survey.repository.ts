@@ -201,7 +201,7 @@ export default class SurveyRepository {
    */
   public async fetchSurveysByUser(userId: string): Promise<FirebaseSurvey[]> {
     const surveysCollection = collection(db, "surveys");
-    const userSurveysQuery = query(surveysCollection, where("userId", "==", userId));
+    const userSurveysQuery = query(surveysCollection, where("authorId", "==", userId));
     const snapshot = await getDocs(userSurveysQuery);
 
     return snapshot.docs.map((doc: any) => ({
@@ -209,6 +209,24 @@ export default class SurveyRepository {
       ...doc.data(),
     })) as FirebaseSurvey[];
   }
+
+  /**
+   * Fetches the answers of a specific survey
+   * @param surveyId - The ID of the survey
+   * @returns A promise resolving to an array of answers
+   */
+  public async fetchSurveyAnswers(surveyId: string): Promise<SurveyAnswer[]> {
+    const surveyDocRef = doc(db, "surveys", surveyId); // Reference to the specific survey document
+    const surveySnapshot = await getDoc(surveyDocRef); // Fetch the survey document
+  
+    if (!surveySnapshot.exists()) {
+      throw new Error(`Survey with ID ${surveyId} does not exist.`);
+    }
+  
+    const surveyData = surveySnapshot.data(); // Get the survey data
+    return (surveyData.responses || []) as SurveyAnswer[]; // Return the responses as an array of SurveyAnswer
+  }
+
 
   /**
    * Submits a response to a survey

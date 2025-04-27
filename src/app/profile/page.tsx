@@ -6,10 +6,11 @@ import { deleteUser } from '@/features/auth/deleteUser';
 import { redirect } from "next/navigation";
 import './profile.css'; 
 import YourSurveyCard from "@/shared/components/yoursurveycard/yoursurveycard";
-import { fetchAllSurveys } from '@/features/survey/services/fetchAllSurveys';
+import { fetchAllSurveysForUser } from '@/features/survey/services/fetchAllSurveysForUser';
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 import SurveyAnswersPage from '@/app/surveyanswers/page';
 import { useRouter } from 'next/navigation';
+import { useUser } from '@/contexts/UserContext';
 
 
 
@@ -19,15 +20,16 @@ const ProfilePage: React.FC = () => {
     redirect("/login");
   }
   const router = useRouter();
-
-const [loading, setLoading] = useState(true);
+  const { userId } = useUser();
+  const [loading, setLoading] = useState(true);
   const [surveys, setSurveys] = useState<FirebaseSurvey[]>([]);
 
   useEffect(() => {
     const loadSurveys = async () => {
       try {
-        const fetchedSurveys = await fetchAllSurveys();
+        const fetchedSurveys = await fetchAllSurveysForUser(userId || ''); // only for this user
         setSurveys(fetchedSurveys);
+        console.log("user id", userId);
       } catch (error) {
         console.error("Error fetching surveys:", error);
       } finally {
@@ -36,7 +38,7 @@ const [loading, setLoading] = useState(true);
     };
 
     loadSurveys();
-  }, []);
+  }, [userId]);
   function handleDeleteProfile() {
     if (session?.user?.email) {
       deleteUser(session.user.email);
@@ -93,7 +95,8 @@ const [loading, setLoading] = useState(true);
         </div>
 
         {/* Survey Cards */}
-        <div className="cards-grid">
+        { surveys.length > 0 ? (
+          <div className="cards-grid">
           {loading ? (
             <p>Loading surveys...</p>
           ) : (
@@ -114,6 +117,9 @@ const [loading, setLoading] = useState(true);
             ))
           )}
         </div>
+        ) : (
+          <p>No surveys here yet!</p>
+        )}
       </div>
 
       

@@ -31,6 +31,7 @@ const ProfilePage: React.FC = () => {
         <div className="profile-info">
           <div className="profile-pic-placeholder">
             {/* Profile picture circle */}
+            <img src={session?.user?.image || ""} alt="Profile Placeholder" className="profile-pic" />
           </div>
           <div className="profile-text">
             <h2>{session?.user?.name || "Your Name"}</h2>

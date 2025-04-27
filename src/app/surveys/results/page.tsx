@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
@@ -9,7 +9,23 @@ import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 import { fetchSurveyById } from '@/features/survey/services/fetchSurveyById';
 import SurveyAnswersDisplay from '@/shared/components/surveys/SurveyAnswersDisplay';
 
+
 export default function SurveyAnswersPage() {
+  const { data: session, status } = useSession();
+
+  // Initial auth check - this works fine
+  if (status === "unauthenticated") {
+    redirect("/login");
+  }
+
+  return (
+    <Suspense fallback={<div>Loading survey...</div>}>
+      <SurveyAnswersContent />
+    </Suspense>
+  );
+}
+
+function SurveyAnswersContent() {
   const { data: session, status } = useSession();
   const router = useRouter(); // Add router
   const { userId } = useUser();
@@ -20,10 +36,6 @@ export default function SurveyAnswersPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Initial auth check - this works fine
-  if (status === "unauthenticated") {
-    redirect("/login");
-  }
 
   useEffect(() => {
     // Skip if we're still waiting for auth or user data

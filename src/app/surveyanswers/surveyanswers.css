@@ -1,13 +1,72 @@
-input[type="range"]::-webkit-slider-thumb {
-    background-color: #3b82f6; /* blue-500 */
-    border: 2px solid white;
-    height: 20px;
-    width: 20px;
-    border-radius: 50%;
-    cursor: pointer;
+/* Survey page outer container */
+.survey-page-container {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
   }
   
-  input[type="range"]:disabled {
-    opacity: 1;
+  /* Survey content wrapper */
+  .survey-content-wrapper {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 768px;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  /* Big survey title */
+  .survey-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Each question card */
+  .survey-question-card {
+    background-color: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* The actual question text */
+  .survey-question-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+  }
+  
+  /* Chart container */
+  .chart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+  
+  /* Text response styling */
+  .survey-text-response {
+    background-color: #e5e7eb;
+    padding: 1rem;
+    border-left: 4px solid #3b82f6;
+    border-radius: 0.5rem;
+    text-align: center;
+    font-style: italic;
+    color: #374151;
+  }
+  
+  /* Loading fallback */
+  .survey-loading {
+    padding: 2rem;
+    text-align: center;
+    font-size: 1.25rem;
   }
   

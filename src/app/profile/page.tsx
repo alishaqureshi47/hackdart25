@@ -111,7 +111,7 @@ const ProfilePage: React.FC = () => {
                 numQuestions={survey.questions.length}
                 imageUrl={survey.imageUrl || "https://source.unsplash.com/random/800x600?survey"}
                 onEdit={() => console.log("Edit clicked", survey.title)}
-                onViewResponses={() => router.push(`/surveyanswers`)}
+                onViewResponses={() => router.push(`/surveyanswers/${survey.id}`)}
                 onClick={() => console.log("Preview clicked", survey.title)}
               />
             ))

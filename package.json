@@ -18,7 +18,9 @@
     "nodemailer": "^6.10.1",
     "openai": "^4.96.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "rechart": "^0.0.1",
+    "recharts": "^2.15.3"
   },
   "devDependencies": {
     "@types/node": "^20",

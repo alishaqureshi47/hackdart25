@@ -1,14 +1,29 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { redirect, useSearchParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 import styles from "./page.module.css"
 import { SurveyQuestion, FirebaseSurvey, SurveyAnswer } from "@/features/survey/types/surveyFirebaseTypes";
 import { useUser } from "@/contexts/UserContext";
 import { fetchSurveyById } from "@/features/survey/services/fetchSurveyById";
 import { submitSurveyResponse } from "@/features/survey/services/submitSurveyResponse";
 
+export default function SurveyViewPage() {
+  const { data: session, status } = useSession();
 
-export default function SurveyPage() {
+  // Initial auth check
+  if (status === 'unauthenticated') {
+    redirect('/login');
+  }
+
+  return (
+    <Suspense fallback={<div>Loading survey...</div>}>
+      <SurveyViewContent />
+    </Suspense>
+  );
+}
+
+function SurveyViewContent() {
   const [survey, setSurvey] = useState<FirebaseSurvey | null>(null);
   const [answers, setAnswers] = useState<Record<number, any>>({});
   const [questions, setQuestions] = useState<SurveyQuestion[]>([]);

@@ -7,7 +7,7 @@ import { geminiGenerate } from "./geminiGenerate";
  * @returns The evaluation of the prompt, true if it is appropriate for a student survey, false if it should be discarded
  */
 export async function filterGoodResponses(text: string): Promise<boolean> {
-	const evaluationPrompt = `Evaluate the following content to determine if it is appropriate for a student survey or if it should be discarded due to lack of quality: "${text}". Take into account that they are usually short surveys. They don't need to be super insightful answers`;
+	const evaluationPrompt = `Evaluate the following content to determine if it is an appropriate answer for a student survey or if it should be discarded due to lack of quality or troll: "${text}". Take into account that they are usually short surveys. They don't need to be super insightful answers`;
 
     const responseSchema = {
         type: Type.BOOLEAN

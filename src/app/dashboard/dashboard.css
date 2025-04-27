@@ -1,7 +1,7 @@
 .dashboard-container {
   display: flex;
   flex-direction: row;
-  align-items: flex-start; /* 🔥 Important: children don't stretch */
+  align-items: flex-start;
   background-color: transparent;
   overflow: hidden;
 }
@@ -11,10 +11,10 @@
   width: 250px;
   background-color: white;
   border-right: 1px solid #e0e0e0;
-  height: calc(100vh - 60px); /* leave room for top nav */
+  height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Top section and bottom section split */
+  justify-content: space-between;
   padding: 2rem 1rem;
   position: fixed;
   left: 0;
@@ -23,99 +23,64 @@
   overflow-y: auto;
   box-sizing: border-box;
 }
-
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* LEFT align everything */
+  align-items: flex-start;
   gap: 1rem;
-  flex: 1; /* Expand to take available space */
-}
-
-.settings-button {
-  font-weight: bold;
-  width: 100%;
-  text-align: left;
-  display: flex; /* 🔥 Make it flex */
-  align-items: center;
-  justify-content: space-between; /* 🔥 Push text left, arrow right */
-  background-color: #f7f9fc;
-  border: 2px solid transparent;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-}
-
-.settings-button:hover {
-  background-color: #e7f5eb; /* Light green background */
-  border: 2px solid #52A46E; /* Your green color */
-  color: #52A46E;
-}
-
-.settings-text {
   flex: 1;
-  text-align: left;
 }
 
-.settings-arrow {
-  margin-left: auto;
-  font-size: 1.2rem;
-}
-
-
-.sidebar-button.create {
-  background-color: #ffffff;
-  border: 2px solid #F27188;
-  color: #F27188;
+/* Buttons */
+.sidebar-button {
   width: 100%;
-  padding: 0.75rem 1rem;
+  text-align: left;
   border-radius: 8px;
-  font-size: 1rem;
   cursor: pointer;
-  text-align: left;
   transition: all 0.3s ease;
-  display: flex; /* 🔥 align text and icon properly */
+  display: flex;
   align-items: center;
-  justify-content: space-between; /* 🔥 push text left, optional icon right */
 }
-
-.sidebar-button.create:hover {
-  background-color: #ffe6eb;
-}
-
-.create-text {
-  flex: 1;
-  text-align: left;
-}
-
-.create-plus {
-  font-size: 1.5rem; /* Make plus bigger if you want */
-  margin-left: auto;
-}
-
 .sidebar-button.explore {
   background-color: #f7f9fc;
   border: 2px solid transparent;
-  width: 100%;
   padding: 0.75rem 1rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.3s ease;
-  display: flex; /* 🔥 align text and icon properly */
-  align-items: center;
-  justify-content: space-between; /* 🔥 push text left, optional icon right */
 }
-
 .sidebar-button.explore:hover {
   background-color: #ffe6eb;
   border-color: #F27188;
   color: #F27188;
 }
+.sidebar-button.create {
+  background-color: #fff;
+  border: 2px solid #F27188;
+  color: #F27188;
+  padding: 0.75rem 1rem;
+  justify-content: space-between;
+}
+.sidebar-button.create:hover {
+  background-color: #ffe6eb;
+}
+.create-text {
+  flex: 1;
+}
+.create-plus {
+  font-size: 1.5rem;
+}
+.profile-button {
+  background-color: #f7f9fc;
+  border: 2px solid transparent;
+  padding: 0.75rem 1rem;
+  justify-content: center;
+  font-weight: bold;
+}
+.profile-button:hover {
+  background-color: #e7f5eb;
+  border: 2px solid #52A46E;
+  color: #52A46E;
+}
 
-
-/* Domain Toggle Section */
+/* Domain Toggle */
 .domain-toggle {
   font-size: 0.9rem;
   margin-top: 2rem;
@@ -126,47 +91,40 @@
   border: 1px solid #e0e0e0;
   box-sizing: border-box;
 }
-
 .domain-toggle p {
   margin: 0 0 0.5rem 0;
   font-weight: bold;
 }
-
 .domain-toggle label {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
-  font-size: 0.9rem;
   cursor: pointer;
 }
-
 .domain-toggle input[type="checkbox"] {
   margin-right: 0.5rem;
   width: 16px;
   height: 16px;
 }
 
-
-/* Main Content */
+/* Main Content & Cards */
 .main-content {
   flex: 1;
-  margin-left: 250px; /* Sidebar space */
+  margin-left: 250px;
   padding: 2rem;
   box-sizing: border-box;
 }
-
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Bigger cards */
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 2rem;
   padding: 2rem;
 }
-
 .survey-card {
   background-color: white;
   padding: 2rem;
   border-radius: 12px;
-  border: 2px dashed #d9d9d9; /* Placeholder style */
+  border: 2px dashed #d9d9d9;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.04);
   text-align: center;
   color: #999;
@@ -177,7 +135,6 @@
   justify-content: center;
   transition: transform 0.2s ease;
 }
-
 .survey-card:hover {
   transform: translateY(-4px);
 }
@@ -188,159 +145,72 @@
   margin-top: auto;
   position: relative;
   display: flex;
-  flex-direction: column-reverse; 
+  flex-direction: column-reverse;
   align-items: flex-start;
 }
 
-.settings-button:hover {
-  background-color: #e7f5eb; /* Light green background (optional for smoothness) */
-  border: 2px solid #52A46E;
-  color: #52A46E;
-}
-
-.settings-button {
-  font-weight: bold;
-  width: 100%;
-  text-align: left;
-}
-
-.settings-menu {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-  width: 100%; /* 🔥 Important to match width */
-}
-
-.sidebar-button.small {
-  font-size: 0.9rem;
-  padding: 0.5rem 1rem;
-  background-color: #f7f9fc;
-  border: 2px solid transparent;
-  width: 100%;
-  text-align: left;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sidebar-button.small:hover {
-  background-color: #ffe6eb;
-  border-color: #F27188;
-  color: #F27188;
-}
-
-/* Filter and Sort By */
+/* Filter & Sort */
 .filter-sort-bar {
   display: flex;
-  justify-content: flex-end; /* 🔥 push everything to the right */
+  justify-content: flex-end;
   align-items: center;
-  gap: 1rem; /* spacing between Filter and Sort */
+  gap: 1rem;
   margin-bottom: 1rem;
   padding: 0 1rem;
 }
-
 .filter-section, .sort-section {
   display: flex;
   align-items: center;
-  gap: 0.3rem; /* smaller gap between label and dropdown */
+  gap: 0.3rem;
 }
-
 .filter-select, .sort-select {
-  padding: 0.3rem 0.8rem; /* smaller padding */
+  padding: 0.3rem 0.8rem;
   border-radius: 6px;
   border: 1px solid #ccc;
-  font-size: 0.9rem; /* 🔥 smaller font */
+  font-size: 0.9rem;
   background-color: #fff;
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
 .filter-select:hover, .sort-select:hover {
   border-color: #F27188;
 }
 
 /* -------------------------------------------------------------------
-   MOBILE: FLOATING BOTTOM NAV BAR with 3 buttons
+   MOBILE: bottom bar only (cards-layout unchanged)
 ------------------------------------------------------------------- */
+.mobile-bar {
+  display: none;
+}
 @media (max-width: 768px) {
-  /* 1) Stack parent vertically so sidebar is out of the flow */
-  .dashboard-container {
-    flex-direction: column;
-  }
-
-  /* 2) Pin sidebar to bottom, full width */
   .sidebar {
-    position: fixed !important;
-    top:    auto   !important;   /* cancel any top:60px */
-    bottom: 0      !important;
-    left:   0      !important;
-    width:  100%   !important;
-    height: auto   !important;
-    background: #fff !important;
-    border-right: none   !important;
-    border-top:   1px solid #e0e0e0  !important;
-    box-shadow:   0 -2px 8px rgba(0,0,0,0.05) !important;
-    padding:      0.25rem 0.5rem        !important;
-    display:      flex   !important;
-    flex-direction: row   !important;
-    justify-content: space-around !important;
-    align-items:     center       !important;
-    z-index: 9999      !important;
-  }
-
-  /* 3) Lay out the nav itself as a row */
-  .sidebar-nav {
-    display:          flex   !important;
-    flex-direction:   row   !important;
-    justify-content:  space-between !important;
-    align-items:      center !important;
-    gap:              0.25rem !important;
-    width:            100%    !important;
-  }
-
-  /* 4) Hide the domain‐toggle entirely */
-  .domain-toggle {
     display: none !important;
   }
-
-  /* 5) Make sure your profile button (in settings-dropdown) shows up */
-  .settings-dropdown {
-    display: block !important;
-    width: auto    !important;
+  .mobile-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    border-top: 1px solid #e0e0e0;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
+    padding: 0.5rem;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1000;
   }
-
-  /* 6) Shrink all sidebar buttons so they fit in one row */
-  .sidebar-button {
-    flex:       1 1 auto !important;
-    margin:     0        !important;
-    padding:    0.4rem 0.6rem !important;
-    font-size:  0.85rem  !important;
-    white-space: nowrap  !important;
-    text-align:  center  !important;
+  .mobile-bar .sidebar-button {
+    flex: 1 1 auto;
+    margin: 0 0.25rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    text-align: center;
   }
-
-  /* 7) Prevent content from sliding under the nav */
   .main-content {
-    margin-left: 0         !important;
-    margin-bottom: 3rem    !important; /* same as approx bar height */
-    padding:     1rem      !important;
+    margin-left: 0 !important;
+    margin-bottom: 3.5rem !important;
   }
-
-  /* 8) Stack your cards in a single column */
-  .cards-grid {
-    display:              grid !important;
-    grid-template-columns: 1fr !important;
-    gap:                   1rem !important;
-    padding:               1rem 0 !important;
-  }
-
-  /* 9) Let your filter/sort wrap cleanly if you kept it visible */
-  .filter-sort-bar {
-    flex-wrap:       wrap          !important;
-    justify-content: flex-start    !important;
-    gap:             0.5rem        !important;
-  }
+  /* no changes to .cards-grid – it remains exactly as above */
 }

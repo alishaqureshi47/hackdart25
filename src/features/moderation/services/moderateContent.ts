@@ -1,17 +1,17 @@
 import { ModerationRepository } from "../repositories/moderation.repository";
 
-export async function moderateContent(text: string): Promise<{ approved: boolean; reason?: string }> {
+export async function moderateContent(text: string): Promise<{ isFlagged: boolean; reasons: Map<string, number> }> {
   // Validate the input text
   if (!text || text.trim().length === 0) {
-	return {
-	  approved: false,
-	  reason: "Text is empty or invalid.",
-	};
+    return {
+      isFlagged: true,
+      reasons: new Map([["Invalid input", 1]]),
+    };
   }
 
   // Create an instance of the ModerationRepository
   const moderationRepo = new ModerationRepository();
 
-  // Send the text to the moderation repository
-  return await moderationRepo.moderateContent(text);
+  // Directly return the result from the repository
+  return moderationRepo.moderateContent(text);
 }

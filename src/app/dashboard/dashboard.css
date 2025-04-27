@@ -119,13 +119,20 @@ body {
   box-sizing: border-box;
   overflow-y: auto;
   max-height: calc(100vh - 60px);
+  padding-top: 30px;       /* leave room for your 60px top nav */
+  margin-bottom: 4rem;     /* leave room for a ~3.5rem bottom bar */
 }
+
+/* 2) Update cards‐grid for true centering + flexible shrinkage */
 .cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
+  /* as many columns as fit, each between 140px and 250px wide */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 250px));
+  justify-content: center; /* centre the whole grid */
+  gap: 2rem;               /* your existing gap */
+  padding: 2rem;           /* your existing padding */
 }
+
 .survey-card {
   background-color: white;
   padding: 2rem;
@@ -135,7 +142,7 @@ body {
   text-align: center;
   color: #999;
   font-size: 1.2rem;
-  min-height: 150px;
+  min-height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,7 +195,7 @@ body {
 .mobile-bar {
   display: none;
 }
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .sidebar {
     display: none !important;
   }
@@ -216,7 +223,15 @@ body {
   }
   .main-content {
     margin-left: 0 !important;
-    margin-bottom: 3.5rem !important;
+    /* keep the top padding so cards sit below the nav */
+    padding: 1rem 1rem 1rem;
+    padding-top: 10px;       /* leave room for your 60px top nav */
+    margin-bottom: 4rem !important;
   }
-  /* no changes to .cards-grid – it remains exactly as above */
+  .cards-grid {
+    /* allow cards to collapse below 200px if needed */
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    /* horizontal centering already handled by justify-content */
+  }
 }

@@ -235,3 +235,67 @@
     font-size: 1.1rem;
   }
 }
+
+/* Add these styles to your existing CSS file */
+.survey-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eaeaea;
+}
+
+.filter-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-control label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.filter-control input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.filter-status {
+  font-size: 0.9rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Add this to your existing CSS */
+.survey-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  font-size: 1.2rem;
+  color: #666;
+  min-height: 200px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+/* For the spinner when filtering */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.survey-loading::before {
+  content: "";
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #8884d8;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}

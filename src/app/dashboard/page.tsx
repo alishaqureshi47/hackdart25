@@ -54,7 +54,7 @@ const DashboardPage: React.FC = () => {
             <span className="create-text">Create</span>
             <span className="create-plus">+</span>
           </button>
-          <div className="domain-toggle">
+          {/* <div className="domain-toggle">
             <p>Show:</p>
             <label>
               <input type="checkbox" name="domain-own" defaultChecked />
@@ -64,7 +64,7 @@ const DashboardPage: React.FC = () => {
               <input type="checkbox" name="domain-public" />
               Public
             </label>
-          </div>
+          </div> */}
           <div className="settings-dropdown">
             <button
               className="sidebar-button profile-button"

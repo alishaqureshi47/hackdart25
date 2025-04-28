@@ -7,6 +7,7 @@ import {
 } from 'recharts';
 import './surveyanswers.css';
 import { useState } from 'react';
+import { filterAnswers } from '@/features/gemini/services/filterAnswers';
 
 // Define the new structure
 export interface SurveyResponse {
@@ -28,6 +29,42 @@ export default function SurveyAnswersDisplay({ survey }: { survey: FirebaseSurve
   const allResponses = (survey.responses ?? []) as SurveyResponse[];
   const [showPieChart, setShowPieChart] = useState<{[key: number]: boolean}>({});
   
+  // Add states for filtering
+  const [filterActive, setFilterActive] = useState<boolean>(false);
+  const [filteredResults, setFilteredResults] = useState<SurveyResponse[]>([]);
+  const [isFiltering, setIsFiltering] = useState<boolean>(false);
+
+  // Function to filter results using your filterAnswers function
+  const toggleFilter = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    setFilterActive(isChecked);
+    
+    if (isChecked) {
+      setIsFiltering(true);
+      
+      // Apply your filtering function
+      try {
+        const filteredResponses = await Promise.all(
+          allResponses.map(async (response) => {
+            // Check if this response passes the filter
+            const isGoodResponse = await filterAnswers(response.responses || []);
+            // Return the response if it passes, otherwise null
+            return isGoodResponse ? response : null;
+          })
+        );
+        
+        // Remove null values and set filtered results
+        setFilteredResults(filteredResponses.filter(Boolean) as SurveyResponse[]);
+      } catch (error) {
+        console.error("Error filtering responses:", error);
+        // If there's an error, just use all responses
+        setFilteredResults(allResponses);
+      }
+      
+      setIsFiltering(false);
+    }
+  };
+  
   // Toggle between pie and bar for multiple choice
   const toggleChartType = (index: number) => {
     setShowPieChart(prev => ({
@@ -36,18 +73,14 @@ export default function SurveyAnswersDisplay({ survey }: { survey: FirebaseSurve
     }));
   };
 
-  if (allResponses.length === 0) {
-    return <div className="survey-loading">No responses found.</div>;
-  }
-
-  // Get total respondents count
-  const totalRespondents = allResponses.length;
+  // Use filtered results when filter is active, otherwise use all responses
+  const displayResponses = filterActive ? filteredResults : allResponses;
 
   // Extract all answers across all responses
   const extractAnswersForQuestion = (questionIndex: number, questionType: string): SurveyAnswer[] => {
     const allAnswers: SurveyAnswer[] = [];
     
-    allResponses.forEach(response => {
+    displayResponses.forEach(response => {
       // Each respondent's answers are stored in response.responses
       const answers = response.responses || [];
       
@@ -64,12 +97,74 @@ export default function SurveyAnswersDisplay({ survey }: { survey: FirebaseSurve
     return allAnswers;
   };
 
+  if (isFiltering) {
+    return <div className="survey-loading">Filtering responses...</div>;
+  }
+
+  if (displayResponses.length === 0) {
+    return (
+      <div className="survey-page-container">
+        <div className="survey-content-wrapper">
+          <h1 className="survey-title">{survey.title}</h1>
+          
+          <div className="survey-controls">
+            <div className="survey-total-responses">
+              Total responses: <span className="highlight">0</span>
+            </div>
+            
+            {/* Add the filter checkbox */}
+            <div className="filter-control">
+              <label>
+                <input 
+                  type="checkbox" 
+                  checked={filterActive}
+                  onChange={toggleFilter}
+                />
+                Filter Results
+              </label>
+              {filterActive && allResponses.length > 0 && (
+                <span className="filter-status">
+                  No responses match the filter criteria
+                </span>
+              )}
+            </div>
+          </div>
+          
+          <div className="survey-loading">No responses found.</div>
+        </div>
+      </div>
+    );
+  }
+
+  // Get total respondents count
+  const totalRespondents = displayResponses.length;
+
   return (
     <div className="survey-page-container">
       <div className="survey-content-wrapper">
         <h1 className="survey-title">{survey.title}</h1>
-        <div className="survey-total-responses">
-          Total responses: <span className="highlight">{totalRespondents}</span>
+        
+        <div className="survey-controls">
+          <div className="survey-total-responses">
+            Total responses: <span className="highlight">{totalRespondents}</span>
+          </div>
+          
+          {/* Add the filter checkbox */}
+          <div className="filter-control">
+            <label>
+              <input 
+                type="checkbox" 
+                checked={filterActive}
+                onChange={toggleFilter}
+              />
+              Filter Results
+            </label>
+            {filterActive && (
+              <span className="filter-status">
+                Showing {filteredResults.length} of {allResponses.length} responses
+              </span>
+            )}
+          </div>
         </div>
 
         {questions.map((question, qIndex) => {
@@ -141,7 +236,6 @@ export default function SurveyAnswersDisplay({ survey }: { survey: FirebaseSurve
     </div>
   );
 }
-
 // Multiple Choice Pie Chart Component
 function MultipleChoicePieChart({ answers }: { answers: MultipleChoiceAnswer[] }) {
   const data = countMultipleChoiceAnswers(answers);

@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
 import './dashboard.css';
 import { useRouter } from 'next/navigation';
-import SurveyCard from '@/shared/components/surveycard/surveycard';
+import SurveyCard from '@/shared/components/surveys/surveycard/SurveyCard';
 import { fetchAllSurveys } from '@/features/survey/services/fetchAllSurveys';
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 

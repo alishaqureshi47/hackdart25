@@ -7,6 +7,7 @@ import { createSurvey } from "@/features/survey/services/createSurvey";
 import { getUserId } from "@/features/auth/getUser";
 import styles from "./page.module.css"
 import FileInput from "@/shared/components/forms/FileInput";
+import LoadingModal from "@/shared/components/LoaderModal";
 
 const CATEGORY_IMAGES = [
   { label: "Business & Entrepreneurship",    img: "/business.png" },
@@ -24,7 +25,6 @@ export default function SurveyPage() {
 
   // Replace context with state variable
   const [userId, setUserId] = useState<string | null>(null);
-  // Rest of your state variables remain the same
   
   // Fetch user ID when session is available
   useEffect(() => {
@@ -35,7 +35,6 @@ export default function SurveyPage() {
           setUserId(id);
         } catch (error) {
           console.error("Failed to fetch user ID:", error);
-          // Handle error - redirect to login or show message
         }
       }
     };
@@ -44,6 +43,7 @@ export default function SurveyPage() {
   }, [session]);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string>("")
   const [category, setCategory] = useState<string>("")
@@ -87,6 +87,8 @@ export default function SurveyPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    setIsLoading(true);
   
     // Validate inputs
     const newErrors: { topic?: string; objective?: string } = {};
@@ -100,6 +102,7 @@ export default function SurveyPage() {
   
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
+      setIsLoading(false);
       return;
     }
   
@@ -121,7 +124,7 @@ export default function SurveyPage() {
       // Use setTimeout to ensure the alert is seen before navigation
       // and to prevent race conditions
       setTimeout(() => {
-        router.replace("/dashboard");
+        router.replace("/profile");
       }, 100);
       
     } catch (error) {
@@ -129,9 +132,13 @@ export default function SurveyPage() {
       console.error("Failed to create survey:", error);
       alert("Failed to create survey.");
     }
+    finally {
+      setIsLoading(false);
+    }
   }
   return (
     <main className={styles.container}>
+      {isLoading && <LoadingModal isLoading/>}
       <h1 className={styles.title}>Create a survey</h1>
       <form className={styles.form} onSubmit={handleSubmit}>
         {errors.objective && <p style={{ color: "red" }}>{errors.objective}</p>}
@@ -247,6 +254,8 @@ export default function SurveyPage() {
             When enabled, inappropriate content will be filtered out from responses
           </p>
         </div>
+
+        <span className={styles.surveyCreateDisclaimer}>Note: you can always edit the generated survey in your profile</span>
 
         {/* SUBMIT */}
         <button type="submit" className={styles.button}>

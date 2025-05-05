@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import SurveyCard, { SurveyCardProps } from "@/shared/components/surveycard/surveycard";
+import SurveyCard, { SurveyCardProps } from "@/shared/components/surveys/surveycard/SurveyCard";
 import { deleteSurvey } from "@/features/survey/services/deleteSurvey";
 import { useRouter } from "next/navigation";
-import "./yoursurveycard.css";
+import "./profile-survey.css";
 
 interface YourSurveyCardProps extends SurveyCardProps {
   onEdit: () => void;

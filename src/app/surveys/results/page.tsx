@@ -32,7 +32,6 @@ function SurveyAnswersContent() {
 
   // Replace context with state variable
   const [userId, setUserId] = useState<string | null>(null);
-  // Rest of your state variables remain the same
   
   // Fetch user ID when session is available
   useEffect(() => {
@@ -43,7 +42,6 @@ function SurveyAnswersContent() {
           setUserId(id);
         } catch (error) {
           console.error("Failed to fetch user ID:", error);
-          // Handle error - redirect to login or show message
         }
       }
     };

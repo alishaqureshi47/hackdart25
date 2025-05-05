@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import "./surveycard.css";
+import "./dashboard-card.css";
 
 export function getTimeAgo(date: Date, now: Date = new Date()): string {
   const seconds = Math.floor((now.getTime() - new Date(date).getTime()) / 1000);

@@ -6,7 +6,7 @@
   overflow: hidden;
 }
 
-body {
+html, body, .dashboard-container {
   overflow: hidden;
 }
 
@@ -197,7 +197,7 @@ body {
 .mobile-bar {
   display: none;
 }
-@media (max-width: 480px) {
+@media (max-width: 650px) {
   .sidebar {
     display: none !important;
   }

@@ -13,25 +13,25 @@ const TEAM: Person[] = [
     name: " Alisha Ahmad Qureshi",
     imgSrc: "/AlishaAboutMe.jpeg",
     imgAlt: "Alisha Headshot",
-    bio: "Passionate full-stack programmer crafting dynamic React and Node.js applications, optimizing databases, automating CI/CD pipelines, collaborating with teams to deliver high-performance software.",
+    bio: "Front-end programmer",
   },
   {
-    name: "Alejandro S. Manriqu",
+    name: "Alejandro S. Manrique",
     imgSrc: "/AlejandroAboutMe.png",
     imgAlt: "Alejandro HeadShot",
-    bio: "Dedicated full-stack programmer designing intuitive Vue.js interfaces, building Django REST APIs, deploying robust infrastructure on AWS, maintainability, and performance optimization.",
+    bio: "Full-stack programmer",
   },
   {
     name: "Tina Pan",
     imgSrc: "/TinaAboutMe.png",
     imgAlt: "Tina HeadShot",
-    bio: "Enthusiastic full-stack programmer combining Angular frontends with Express servers, managing PostgreSQL and MongoDB, containerizing with Docker, and orchestrating Jenkins for seamless deployments.",
+    bio: "Front-end programmer",
   },
   {
     name: "Vishal J. Powell",
     imgSrc: "/VishalAboutMe.jpg",
     imgAlt: "Vishal HeadShot",
-    bio: "Creative full-stack programmer leveraging Svelte and Spring Boot, integrating GraphQL APIs, automating Kubernetes deployments, practicing TDD, performance tuning, and exceeding user expectations.",
+    bio: "Front-end programmer",
   },
 ]
 

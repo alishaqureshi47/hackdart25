@@ -3,29 +3,37 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import styles from "./Nav.module.css"
+import { usePathname } from "next/navigation"
 
 export type NavProps = {
   avatarSrc?: string            // path to the image you want in top‐right
 }
 
 const NAV_ITEMS = [
-  { href: "/dashboard", label: "Home" },
+  { href: "/", label: "Home" },
   { href: "/about",     label: "About" },
 ]
 
 export default function Nav({ avatarSrc }: NavProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
-  function handleNavClick() {
+  function handleNavClick(e: any) {
     setMenuOpen(false);
+    const pathname = usePathname();
+
+    // If we're clicking a link to the current page, reload the page
+    if (e.currentTarget.getAttribute("href") === pathname) {
+      e.preventDefault()
+      window.location.href = pathname
+    }
   }
 
   return (
     <header className={styles.navbar}>
       {/* Brand / logo on the left */}
-      <Link href="/dashboard" className={styles.brand} onClick={handleNavClick}>
-        <img src="/logo.png" alt="Logo" width={30} />
-        <span className={styles.brandName}>Quipp</span>
+      <Link href="/" className={styles.brand} onClick={handleNavClick}>
+        <img src="/logo.png" alt="Logo" width={36} />
+        <span className={styles.brandName}>quipp</span>
       </Link>
 
       {/* Desktop & Mobile nav links */}

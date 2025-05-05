@@ -1,7 +1,21 @@
+"use client";
+
 import styles from "./page.module.css";
 import Link from "next/link";
+import { isUserLoggedIn } from "@/shared/utils/isUserLoggedIn";
+import { useEffect } from "react";
 
 export default function Home() {
+
+  useEffect(() => {
+    async function checkUserLoggedIn() {
+      const userLoggedIn = await isUserLoggedIn();
+      if (userLoggedIn) {
+        window.location.href = "/dashboard";
+      }
+    }
+    checkUserLoggedIn();
+  }, []);
 
   return (
     <main className={styles.main}>

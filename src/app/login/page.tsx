@@ -11,7 +11,7 @@ function LoginContent() {
   // Handle Google sign in
   const handleGoogleSignIn = async () => {
     await signIn("google", { 
-      callbackUrl: "/failed_login",
+      callbackUrl: "/login_check",
       // Force a new consent prompt to ensure we bypass any cached permissions
       prompt: "consent"
     });

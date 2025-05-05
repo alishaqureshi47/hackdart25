@@ -7,6 +7,7 @@ import { SurveyQuestion, FirebaseSurvey, SurveyAnswer } from "@/features/survey/
 import { getUserId } from "@/features/auth/getUser";
 import { fetchSurveyById } from "@/features/survey/services/fetchSurveyById";
 import { submitSurveyResponse } from "@/features/survey/services/submitSurveyResponse";
+import LoadingModal from "@/shared/components/LoaderModal";
 
 export default function SurveyViewPage() {
   const { data: session, status } = useSession();
@@ -15,6 +16,14 @@ export default function SurveyViewPage() {
   if (status === 'unauthenticated') {
     redirect('/login');
   }
+
+  // Force layout recalculation after component mounts
+  useEffect(() => {
+    // This will run after the component mounts on the client side
+    window.requestAnimationFrame(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
+  }, []);
 
   return (
     <Suspense fallback={<div>Loading survey...</div>}>
@@ -27,6 +36,7 @@ function SurveyViewContent() {
   const [survey, setSurvey] = useState<FirebaseSurvey | null>(null);
   const [answers, setAnswers] = useState<Record<number, any>>({});
   const [questions, setQuestions] = useState<SurveyQuestion[]>([]);
+  const [loading, setLoading] = useState(false);
   const { data: session, status } = useSession();
   if (status === "unauthenticated") redirect("/login");
 
@@ -78,7 +88,8 @@ function SurveyViewContent() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    console.log("Survey answers:", answers)
+    setLoading(true);
+
     // send answers to server
     const surveyAnswers: SurveyAnswer[] = questions.map((q, index) => {
       if (q.questionType === "multiple-choice") {
@@ -103,7 +114,18 @@ function SurveyViewContent() {
       }
     })
 
-    await submitSurveyResponse(surveyId || '', surveyAnswers , userId || '');
+    try {
+      await submitSurveyResponse(surveyId || '', surveyAnswers , userId || '');
+    }
+    catch (error) {
+      console.error("Error submitting survey:", error);
+      alert("Error submitting survey. Please try again.");
+      setLoading(false);
+      return;
+    }
+    finally {
+      setLoading(false);
+    }
 
     alert("Survey submitted successfully!");
     // redirect to dashboard
@@ -112,7 +134,8 @@ function SurveyViewContent() {
 
   return (
     <main className={styles.container}>
-      <h1 className={styles.title}>Customer Satisfaction Survey</h1>
+      {loading && <LoadingModal isLoading />}
+      <h1 className={styles.title}>{survey?.title}</h1>
       <form onSubmit={handleSubmit} className={styles.form}>
         {questions.map((q, index) => (
           <div key={index} className={styles.questionCard}>

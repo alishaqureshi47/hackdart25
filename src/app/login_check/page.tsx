@@ -4,7 +4,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import "./failed_login.css";
+import "./login_check.css";
 
 export default function Dashboard() {
   const { data: session, status } = useSession();

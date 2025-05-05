@@ -5,7 +5,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { deleteUser } from '@/features/auth/deleteUser';
 import { redirect } from "next/navigation";
 import './profile.css'; 
-import YourSurveyCard from "@/shared/components/yoursurveycard/yoursurveycard";
+import ProfileSurveyCard from "@/shared/components/surveys/profileSurvey/ProfileSurvey";
 import { fetchAllSurveysForUser } from '@/features/survey/services/fetchAllSurveysForUser';
 import { FirebaseSurvey } from '@/features/survey/types/surveyFirebaseTypes';
 import SurveyAnswersPage from '@/shared/components/surveys/SurveyAnswersDisplay';
@@ -21,7 +21,6 @@ const ProfilePage: React.FC = () => {
 
   // Replace context with state variable
   const [userId, setUserId] = useState<string | null>(null);
-  // Rest of your state variables remain the same
   
   // Fetch user ID when session is available
   useEffect(() => {
@@ -32,7 +31,6 @@ const ProfilePage: React.FC = () => {
           setUserId(id);
         } catch (error) {
           console.error("Failed to fetch user ID:", error);
-          // Handle error - redirect to login or show message
         }
       }
     };
@@ -120,7 +118,7 @@ const ProfilePage: React.FC = () => {
             <p>Loading surveys...</p>
           ) : (
             surveys.map((survey, index) => (
-              <YourSurveyCard
+              <ProfileSurveyCard
                 id={survey.id}
                 key={index}
                 title={survey.title}

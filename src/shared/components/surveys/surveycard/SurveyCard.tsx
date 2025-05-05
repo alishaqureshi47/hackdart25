@@ -4,8 +4,23 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import "./dashboard-card.css";
 
-export function getTimeAgo(date: Date, now: Date = new Date()): string {
-  const seconds = Math.floor((now.getTime() - new Date(date).getTime()) / 1000);
+export function getTimeAgo(date: Date | string, now: Date = new Date()): string {
+  // Ensure we have a proper Date object
+  const dateObj = date instanceof Date ? date : new Date(date);
+  
+  // Check if the date is valid
+  if (isNaN(dateObj.getTime())) {
+    console.error("Invalid date provided to getTimeAgo:", date);
+    return "Invalid date";
+  }
+  
+  const seconds = Math.floor((now.getTime() - dateObj.getTime()) / 1000);
+  
+  // Handle future dates
+  if (seconds < 0) {
+    return "In the future";
+  }
+  
   const intervals = [
     { label: "year", seconds: 31536000 },
     { label: "month", seconds: 2592000 },

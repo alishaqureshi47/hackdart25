@@ -20,7 +20,7 @@ This is a web-based survey application built with Next.js, TypeScript and Fireba
 - **`public`**: Static assets like images and icons.
 
 ## Installation
-
+You can access it in the sub-domain: https://quipp.vercel.app/ 
 1. Clone the repository:
    ```bash
    git clone https://github.com/alejo742/hackdart25.git

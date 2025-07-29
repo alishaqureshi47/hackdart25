@@ -1,3 +1,12 @@
+
+# My Contribution (Alisha Ahmad Qureshi)
+I worked primarily on the frontend design and implementation of Quipp. My main contributions include:
+Page Design & Layout: Designed and coded the landing page, homepage, and navigation structure, ensuring a clean and intuitive user experience.
+Survey Card Module: Created the survey card preview components used throughout the app for displaying surveys dynamically.
+UI Consistency & Styling: Established the visual style and structure for the app’s pages, including typography, spacing, and overall layout coherence.
+Frontend Integration: Connected the survey card components and pages with backend data, ensuring that surveys displayed correctly and dynamically.
+
+
 # Quipp: Surveying for Campuses!
 
 This is a web-based survey application built with Next.js, TypeScript and Firebase, oriented specifically for college students across the US. The application allows users to create, manage, and participate in surveys in their campus or nationally.
